@@ -1,0 +1,138 @@
+---
+import NidoMark from './NidoMark.astro';
+---
+
+<div id="page-loader" class="page-loader" aria-hidden="true">
+	<div class="loader-mark">
+		<NidoMark variant="light" size={30} showWordmark={false} />
+	</div>
+
+	<div class="loader-stage">
+		<div class="loader-slide" data-slide="1">
+			<p class="loader-line">Hola.</p>
+			<p class="loader-line">Bienvenido.</p>
+		</div>
+		<div class="loader-slide" data-slide="2">
+			<p class="loader-line">¿Te has dado cuenta?<br />Tus clientes no vuelven.</p>
+		</div>
+		<div class="loader-slide" data-slide="3">
+			<p class="loader-line loader-line--stat">
+				Un 5% más de retención puede subir tus ganancias hasta un 95%.
+			</p>
+			<p class="loader-attribution">Bain &amp; Company, Harvard Business Review</p>
+		</div>
+	</div>
+</div>
+
+<noscript>
+	<style>
+		html.is-loading {
+			overflow: visible !important;
+		}
+		#page-loader {
+			display: none !important;
+		}
+	</style>
+</noscript>
+
+<script>
+	import { gsap } from 'gsap';
+
+	const loader = document.getElementById('page-loader');
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const alreadySeen = sessionStorage.getItem('nidus-loader-seen') === '1';
+
+	if (!loader) {
+		// no-op
+	} else if (prefersReducedMotion || alreadySeen) {
+		loader.remove();
+		document.documentElement.classList.remove('is-loading');
+	} else {
+		sessionStorage.setItem('nidus-loader-seen', '1');
+
+		const mark = loader.querySelector('.loader-mark');
+		const slides = Array.from(loader.querySelectorAll<HTMLElement>('.loader-slide'));
+
+		const tl = gsap.timeline({
+			onComplete: () => {
+				loader.remove();
+				document.documentElement.classList.remove('is-loading');
+			},
+		});
+
+		tl.fromTo(mark, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)' });
+
+		slides.forEach((slide, i) => {
+			tl.to(slide, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }, i === 0 ? '-=0.15' : '+=0');
+			tl.to({}, { duration: i === 2 ? 1.1 : 0.75 });
+			tl.to(slide, { opacity: 0, y: -14, duration: 0.4, ease: 'power2.in' });
+		});
+
+		tl.to(loader, { opacity: 0, duration: 0.5, ease: 'power2.inOut' }, '-=0.1').set(loader, {
+			visibility: 'hidden',
+		});
+	}
+</script>
+
+<style>
+	:global(html.is-loading) {
+		overflow: hidden;
+	}
+
+	.page-loader {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		background: #000;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
+		padding: 24px;
+		text-align: center;
+	}
+
+	.loader-mark {
+		margin-bottom: 4px;
+	}
+
+	.loader-stage {
+		position: relative;
+		width: min(680px, 90vw);
+		height: 140px;
+	}
+
+	.loader-slide {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		opacity: 0;
+		transform: translateY(14px);
+	}
+
+	.loader-line {
+		margin: 0;
+		font-family: var(--font-ui);
+		font-size: clamp(1.6rem, 4vw, 2.5rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+		color: #f5f5f7;
+	}
+
+	.loader-line--stat {
+		font-size: clamp(1.25rem, 3vw, 1.85rem);
+	}
+
+	.loader-attribution {
+		margin: 0;
+		font-size: 13px;
+		font-weight: 500;
+		color: #86868b;
+	}
+</style>

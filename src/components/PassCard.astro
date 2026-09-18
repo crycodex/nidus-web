@@ -1,29 +1,72 @@
 ---
+export type PassColor =
+	| 'purple'
+	| 'tomate'
+	| 'grafito'
+	| 'azul'
+	| 'verde'
+	| 'fucsia'
+	| 'dorado'
+	| 'turquesa';
+
 interface Props {
-	size?: 'hero' | 'default';
+	size?: 'hero' | 'default' | 'compact';
 	class?: string;
+	color?: PassColor;
+	business?: string;
+	rule?: string;
+	filled?: number;
+	total?: number;
 }
 
-const { size = 'default', class: className = '' } = Astro.props;
-const stamps = Array.from({ length: 8 });
+const COLORS: Record<PassColor, { from: string; to: string; check: string; shadow: string }> = {
+	purple: { from: '#7C3AED', to: '#4C1D95', check: '#7C3AED', shadow: 'rgba(76, 29, 149, 0.45)' },
+	tomate: { from: '#FF6B4A', to: '#B93E1F', check: '#FF6B4A', shadow: 'rgba(185, 62, 31, 0.42)' },
+	grafito: { from: '#4B5563', to: '#1F2937', check: '#4B5563', shadow: 'rgba(31, 41, 55, 0.5)' },
+	azul: { from: '#3B82F6', to: '#1E3A8A', check: '#3B82F6', shadow: 'rgba(30, 58, 138, 0.45)' },
+	verde: { from: '#22C55E', to: '#14532D', check: '#22C55E', shadow: 'rgba(20, 83, 45, 0.42)' },
+	fucsia: { from: '#EC4899', to: '#831843', check: '#EC4899', shadow: 'rgba(131, 24, 67, 0.42)' },
+	dorado: { from: '#E7B546', to: '#8A5A0A', check: '#E7B546', shadow: 'rgba(138, 90, 10, 0.4)' },
+	turquesa: { from: '#2DD4BF', to: '#115E59', check: '#2DD4BF', shadow: 'rgba(17, 94, 89, 0.42)' },
+};
+
+const {
+	size = 'default',
+	class: className = '',
+	color = 'purple',
+	business = 'Café Aurora',
+	rule = '8 sellos = café gratis',
+	filled = 7,
+	total = 8,
+} = Astro.props;
+
+const stamps = Array.from({ length: total });
+const palette = COLORS[color];
 ---
 
-<div class:list={['pass-card', size, className]}>
+<div
+	class:list={['pass-card', size, className]}
+	style={{
+		'--from': palette.from,
+		'--to': palette.to,
+		'--pass-shadow': palette.shadow,
+	}}
+>
 	<div class="pass-top">
 		<span class="pass-eyebrow">Tarjeta de sellos</span>
-		<span class="pass-business">Café Aurora</span>
+		<span class="pass-business">{business}</span>
 	</div>
 
-	<div class="pass-stamps" role="img" aria-label="7 de 8 sellos completados">
+	<div class="pass-stamps" role="img" aria-label={`${filled} de ${total} sellos completados`}>
 		{
 			stamps.map((_, i) => (
-				<span class:list={['stamp', { filled: i < 7 }]}>
-					{i < 7 && (
+				<span class:list={['stamp', { filled: i < filled }]}>
+					{i < filled && (
 						<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
 							<path
 								d="M4 12.5L9.5 18L20 6"
 								fill="none"
-								stroke="#7C3AED"
+								stroke={palette.check}
 								stroke-width="2.6"
 								stroke-linecap="round"
 								stroke-linejoin="round"
@@ -37,14 +80,26 @@ const stamps = Array.from({ length: 8 });
 
 	<div class="pass-reward">
 		<span class="reward-label">Recompensa</span>
-		<span class="reward-value">8 sellos = café gratis</span>
+		<span class="reward-value">{rule}</span>
 	</div>
 
 	<div class="pass-footer">
 		<span class="nest-glyph" aria-hidden="true">
 			<svg viewBox="0 0 48 24" width="22" height="11" fill="none">
-				<path d="M4 14C10 20 17 22 24 22C31 22 38 20 44 14" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.9" />
-				<path d="M8 12C13 17 18 19 24 19C30 19 35 17 40 12" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7" />
+				<path
+					d="M4 14C10 20 17 22 24 22C31 22 38 20 44 14"
+					stroke="white"
+					stroke-width="1.4"
+					stroke-linecap="round"
+					opacity="0.9"
+				/>
+				<path
+					d="M8 12C13 17 18 19 24 19C30 19 35 17 40 12"
+					stroke="white"
+					stroke-width="1.4"
+					stroke-linecap="round"
+					opacity="0.7"
+				/>
 			</svg>
 		</span>
 		<span>Hecho con Nidus</span>
@@ -60,12 +115,12 @@ const stamps = Array.from({ length: 8 });
 		height: var(--pass-h);
 		border-radius: var(--r-hero);
 		padding: 24px 26px;
-		background: linear-gradient(135deg, var(--purple) 0%, var(--purple-deep) 100%);
+		background: linear-gradient(135deg, var(--from) 0%, var(--to) 100%);
 		color: var(--paper);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		box-shadow: 0 24px 48px -12px rgba(76, 29, 149, 0.45), var(--shadow-lifted);
+		box-shadow: 0 24px 48px -12px var(--pass-shadow), var(--shadow-lifted);
 		overflow: hidden;
 		font-family: var(--font-ui);
 	}
@@ -81,6 +136,12 @@ const stamps = Array.from({ length: 8 });
 	.pass-card.hero {
 		--pass-w: 380px;
 		--pass-h: 232px;
+	}
+
+	.pass-card.compact {
+		--pass-w: 260px;
+		--pass-h: 168px;
+		padding: 20px 22px;
 	}
 
 	.pass-top {
@@ -104,6 +165,10 @@ const stamps = Array.from({ length: 8 });
 		letter-spacing: -0.01em;
 	}
 
+	.pass-card.compact .pass-business {
+		font-size: 18px;
+	}
+
 	.pass-stamps {
 		display: flex;
 		gap: 8px;
@@ -119,6 +184,11 @@ const stamps = Array.from({ length: 8 });
 		justify-content: center;
 		background: rgba(255, 255, 255, 0.14);
 		border: 1.5px dashed rgba(255, 255, 255, 0.4);
+	}
+
+	.pass-card.compact .stamp {
+		width: 21px;
+		height: 21px;
 	}
 
 	.stamp.filled {
@@ -144,6 +214,10 @@ const stamps = Array.from({ length: 8 });
 	.reward-value {
 		font-size: 15px;
 		font-weight: 700;
+	}
+
+	.pass-card.compact .reward-value {
+		font-size: 13px;
 	}
 
 	.pass-footer {

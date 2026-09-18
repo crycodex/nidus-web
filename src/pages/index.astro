@@ -58,6 +58,58 @@ const rubros = [
 	{ nombre: 'Agencia', regla: '6 reservas = beneficio de cortesía' },
 	{ nombre: 'Otro', regla: 'Tú defines la regla' },
 ];
+
+const galeriaPases = [
+	{ color: 'purple', business: 'Café Aurora', rule: '8 sellos = café gratis', filled: 6, total: 8 },
+	{
+		color: 'grafito',
+		business: 'Barbería Roble',
+		rule: '6 cortes = 1 corte gratis',
+		filled: 4,
+		total: 6,
+	},
+	{
+		color: 'tomate',
+		business: 'Fonda La Esquina',
+		rule: '10 visitas = plato de la casa',
+		filled: 7,
+		total: 10,
+	},
+	{ color: 'verde', business: 'Studio Vital', rule: '10 visitas = 1 clase gratis', filled: 5, total: 10 },
+	{ color: 'fucsia', business: 'Closet Nora', rule: '8 compras = 20% off', filled: 3, total: 8 },
+	{
+		color: 'turquesa',
+		business: 'NutriMax',
+		rule: '8 compras = producto de regalo',
+		filled: 8,
+		total: 8,
+	},
+	{ color: 'azul', business: 'Farmacia San Juan', rule: '10 visitas = descuento', filled: 2, total: 10 },
+	{
+		color: 'dorado',
+		business: 'Agencia Norte',
+		rule: '6 reservas = beneficio de cortesía',
+		filled: 5,
+		total: 6,
+	},
+] as const;
+
+const planes = [
+	{
+		nombre: 'Mensual',
+		precio: '$20',
+		periodo: '/mes',
+		nota: 'Cancela cuando quieras.',
+		destacado: false,
+	},
+	{
+		nombre: 'Anual',
+		precio: '$200',
+		periodo: '/año',
+		nota: 'Ahorra 2 meses frente al mensual.',
+		destacado: true,
+	},
+];
 ---
 
 <Layout>
@@ -84,20 +136,10 @@ const rubros = [
 				</div>
 
 				<div class="hero-visual" aria-hidden="true">
-					<PassCard size="hero" />
+					<div id="hero-pass-wrap" class="hero-pass-wrap">
+						<PassCard size="hero" />
+					</div>
 				</div>
-			</div>
-		</section>
-
-		<!-- B: Tensión -->
-		<section class="tension" data-reveal>
-			<div class="container tension-lines">
-				<p class="tension-line">Hola. Bienvenido.</p>
-				<p class="tension-line">¿Te has dado cuenta? Tus clientes no vuelven.</p>
-				<p class="tension-line">
-					Un 5% más de retención puede subir tus ganancias hasta un 95%.
-					<span class="tension-source">Bain &amp; Company, Harvard Business Review</span>
-				</p>
 			</div>
 		</section>
 
@@ -105,7 +147,7 @@ const rubros = [
 		<section class="como" id="como">
 			<div class="container">
 				<h2 class="section-title">Cómo funciona</h2>
-				<div class="steps">
+				<div class="steps" data-reveal-group>
 					{
 						comoFunciona.map((step) => (
 							<div class="step" data-reveal>
@@ -144,7 +186,7 @@ const rubros = [
 		<section class="para-negocio" id="para-quien">
 			<div class="container">
 				<h2 class="section-title">Para el negocio</h2>
-				<div class="feature-grid">
+				<div class="feature-grid" data-reveal-group>
 					{
 						paraNegocio.map((f) => (
 							<div class="feature-card" data-reveal>
@@ -161,7 +203,7 @@ const rubros = [
 		<section class="rubros">
 			<div class="container">
 				<h2 class="section-title">Hecho para el local, no para la cadena.</h2>
-				<div class="rubro-chips">
+				<div class="rubro-chips" data-reveal-group>
 					{
 						rubros.map((r) => (
 							<div class="rubro-chip" data-reveal>
@@ -170,6 +212,69 @@ const rubros = [
 							</div>
 						))
 					}
+				</div>
+			</div>
+		</section>
+
+		<!-- Galería de pases -->
+		<section class="galeria">
+			<div class="container galeria-header">
+				<h2 class="section-title">Un pase para cada negocio.</h2>
+				<p class="galeria-lead">Mismo nido, el color y la regla que tú definas.</p>
+			</div>
+			<div class="galeria-track" data-reveal-group>
+				{
+					galeriaPases.map((p) => (
+						<div class="galeria-item" data-reveal>
+							<PassCard
+								size="compact"
+								color={p.color}
+								business={p.business}
+								rule={p.rule}
+								filled={p.filled}
+								total={p.total}
+							/>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<!-- Precios -->
+		<section class="precios" id="precios">
+			<div class="container">
+				<h2 class="section-title">Un precio, sin letra chica.</h2>
+				<div class="planes" data-reveal-group>
+					{
+						planes.map((plan) => (
+							<div class:list={['plan-card', { destacado: plan.destacado }]} data-reveal>
+								{plan.destacado && <span class="plan-badge">Recomendado</span>}
+								<span class="plan-nombre">{plan.nombre}</span>
+								<div class="plan-precio">
+									<span class="plan-monto">{plan.precio}</span>
+									<span class="plan-periodo">{plan.periodo}</span>
+								</div>
+								<p class="plan-nota">{plan.nota}</p>
+								<a href={APP_STORE_URL} class:list={['btn', plan.destacado ? 'btn-primary' : 'btn-outline']}>
+									Empezar
+								</a>
+							</div>
+						))
+					}
+				</div>
+
+				<div class="founders-card" data-reveal>
+					<span class="founders-badge">Por tiempo limitado</span>
+					<h3>Sé de los fundadores de Nidus</h3>
+					<p>
+						Los primeros negocios que se unen ahora se quedan con beneficios que no vuelven a
+						repetirse:
+					</p>
+					<ul class="founders-list">
+						<li>Badge de fundador en la app</li>
+						<li>Soporte prioritario</li>
+						<li>Un mes gratis</li>
+					</ul>
 				</div>
 			</div>
 		</section>
@@ -209,8 +314,14 @@ const rubros = [
 				<div class="carta-card" data-reveal>
 					<p>Hola.</p>
 					<p>
-						Vi que los emprendedores consiguen clientes… y los pierden. No hay un nido que los
-						haga volver. Por eso creé Nidus.
+						Nidus nació en noches en las que lo único despierto era el código y yo. No hubo plan
+						de negocio detrás — hubo insomnio, café frío y una idea que no me dejaba dormir:
+						ningún emprendedor debería perder al cliente que ya se ganó.
+					</p>
+					<p>
+						Programar es lo que sé hacer. Ayudar a que los negocios de mi gente crezcan es lo que
+						quiero hacer. Nidus es donde se juntan las dos cosas: un nido armado línea por línea,
+						para que tus clientes siempre encuentren el camino de vuelta.
 					</p>
 					<p class="carta-firma">— Cristhian Recalde, fundador</p>
 				</div>
@@ -230,11 +341,48 @@ const rubros = [
 	<Footer />
 </Layout>
 
+<script>
+	import { gsap } from 'gsap';
+
+	const wrap = document.getElementById('hero-pass-wrap');
+	const card = wrap?.querySelector<HTMLElement>('.pass-card');
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (wrap && card && !prefersReducedMotion) {
+		gsap.to(card, {
+			y: -10,
+			duration: 2.6,
+			ease: 'sine.inOut',
+			repeat: -1,
+			yoyo: true,
+		});
+
+		const maxTilt = 10;
+		wrap.addEventListener('pointermove', (event) => {
+			const rect = wrap.getBoundingClientRect();
+			const px = (event.clientX - rect.left) / rect.width - 0.5;
+			const py = (event.clientY - rect.top) / rect.height - 0.5;
+
+			gsap.to(card, {
+				rotateY: px * maxTilt,
+				rotateX: -py * maxTilt,
+				duration: 0.5,
+				ease: 'power2.out',
+				overwrite: 'auto',
+			});
+		});
+
+		wrap.addEventListener('pointerleave', () => {
+			gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power2.out' });
+		});
+	}
+</script>
+
 <style>
 	.hero {
-		background: var(--ink);
+		background: var(--near-black);
 		color: var(--paper);
-		padding-block: 96px 80px;
+		padding-block: 120px 96px;
 		overflow: hidden;
 	}
 
@@ -246,10 +394,14 @@ const rubros = [
 	}
 
 	.hero-copy h1 {
-		font-size: clamp(2.5rem, 6vw, 4.25rem);
-		color: var(--paper);
+		font-size: clamp(2.75rem, 6.4vw, 5.5rem);
 		margin-top: 14px;
 		max-width: 14ch;
+		letter-spacing: -0.03em;
+		background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
 	}
 
 	.hero-lead {
@@ -278,33 +430,24 @@ const rubros = [
 		justify-content: center;
 	}
 
-	.tension {
-		background: var(--ink);
-		padding-block: 72px;
+	.hero-pass-wrap {
+		perspective: 900px;
+		position: relative;
 	}
 
-	.tension-lines {
-		display: flex;
-		flex-direction: column;
-		gap: 28px;
-		max-width: 760px;
+	.hero-pass-wrap::before {
+		content: '';
+		position: absolute;
+		inset: -18%;
+		background: radial-gradient(circle, #c9b6f2 0%, #b8c8f5 45%, #f6e7a8 75%, transparent 78%);
+		filter: blur(48px);
+		opacity: 0.35;
+		z-index: -1;
 	}
 
-	.tension-line {
-		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3.4vw, 2.1rem);
-		line-height: 1.35;
-		color: var(--paper);
-		margin: 0;
-	}
-
-	.tension-source {
-		display: block;
-		font-family: var(--font-ui);
-		font-size: 13px;
-		color: var(--faint);
-		margin-top: 10px;
-		font-weight: 500;
+	.hero-pass-wrap :global(.pass-card) {
+		transform-style: preserve-3d;
+		will-change: transform;
 	}
 
 	.section-title {
@@ -408,7 +551,7 @@ const rubros = [
 	}
 
 	.para-negocio {
-		background: var(--ink);
+		background: var(--near-black);
 		padding-block: 96px;
 	}
 
@@ -471,6 +614,178 @@ const rubros = [
 	.rubro-regla {
 		font-size: 13px;
 		color: var(--muted);
+	}
+
+	.galeria {
+		background: var(--near-black);
+		padding-block: 96px;
+		overflow: hidden;
+	}
+
+	.galeria-header {
+		margin-bottom: 40px;
+	}
+
+	.galeria .section-title {
+		color: var(--paper);
+		margin-bottom: 12px;
+	}
+
+	.galeria-lead {
+		color: rgba(255, 255, 255, 0.6);
+		font-size: 16px;
+		margin: 0;
+	}
+
+	.galeria-track {
+		display: flex;
+		gap: 20px;
+		overflow-x: auto;
+		padding: 4px 24px 20px;
+		margin: 0 -24px;
+		scroll-snap-type: x proximity;
+		scrollbar-width: thin;
+	}
+
+	.galeria-item {
+		flex: 0 0 auto;
+		scroll-snap-align: start;
+	}
+
+	.precios {
+		background: var(--canvas);
+		padding-block: 96px;
+	}
+
+	.planes {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 20px;
+		max-width: 720px;
+	}
+
+	.plan-card {
+		position: relative;
+		background: var(--paper);
+		border-radius: var(--r-panel);
+		padding: 32px;
+		box-shadow: var(--shadow-soft);
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.plan-card.destacado {
+		box-shadow: 0 0 0 2px var(--purple), var(--shadow-lifted);
+	}
+
+	.plan-badge {
+		position: absolute;
+		top: -12px;
+		right: 28px;
+		background: var(--purple);
+		color: var(--paper);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		padding: 5px 12px;
+		border-radius: 999px;
+	}
+
+	.plan-nombre {
+		font-weight: 800;
+		font-size: 14px;
+		color: var(--muted);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.plan-precio {
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
+	}
+
+	.plan-monto {
+		font-family: var(--font-display);
+		font-size: 2.75rem;
+		font-weight: 600;
+		color: var(--ink);
+	}
+
+	.plan-periodo {
+		color: var(--muted);
+		font-size: 15px;
+	}
+
+	.plan-nota {
+		color: var(--muted);
+		font-size: 14px;
+		margin: 0 0 10px;
+	}
+
+	.plan-card .btn {
+		align-self: flex-start;
+	}
+
+	.founders-card {
+		margin-top: 24px;
+		max-width: 720px;
+		background: var(--near-black);
+		color: var(--paper);
+		border-radius: var(--r-panel);
+		padding: 32px 36px;
+	}
+
+	.founders-badge {
+		display: inline-block;
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--purple);
+		margin-bottom: 12px;
+	}
+
+	.founders-card h3 {
+		font-family: var(--font-ui);
+		font-size: 20px;
+		font-weight: 800;
+	}
+
+	.founders-card p {
+		margin-top: 10px;
+		color: rgba(255, 255, 255, 0.72);
+		font-size: 15px;
+		line-height: 1.5;
+	}
+
+	.founders-list {
+		list-style: none;
+		padding: 0;
+		margin: 18px 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px 24px;
+	}
+
+	.founders-list li {
+		position: relative;
+		padding-left: 22px;
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.founders-list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 5px;
+		width: 12px;
+		height: 12px;
+		border-radius: 999px;
+		background: var(--purple);
 	}
 
 	.ia {
@@ -562,8 +877,27 @@ const rubros = [
 	}
 
 	.cta-final {
+		position: relative;
 		background: linear-gradient(135deg, var(--purple) 0%, var(--purple-deep) 100%);
 		padding-block: 96px;
+		overflow: hidden;
+	}
+
+	.cta-final::before {
+		content: '';
+		position: absolute;
+		top: -30%;
+		right: -10%;
+		width: 46%;
+		aspect-ratio: 1;
+		background: radial-gradient(circle, #f6e7a8 0%, #c9b6f2 55%, transparent 72%);
+		filter: blur(60px);
+		opacity: 0.3;
+		pointer-events: none;
+	}
+
+	.cta-final-inner {
+		position: relative;
 	}
 
 	.cta-final-inner {
@@ -606,6 +940,10 @@ const rubros = [
 
 		.feature-grid {
 			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.planes {
+			grid-template-columns: repeat(2, 1fr);
 		}
 
 		.ia-grid {

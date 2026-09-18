@@ -32,7 +32,9 @@ Geografía actual: Ecuador primero (felicitación de cumpleaños automática a l
 
 Ya existe y sí se promociona: pases reales en Apple Wallet + Google Wallet; inscripción por QR; sellado/canje con cámara; plantillas por rubro; varios tipos de pase (fidelización, cupón, entrada, membresía, tarjeta de regalo, pase/invitación); modos (sellos, puntos, visitas, consumo); sucursales + equipo (dueño/admin/gerente/mostrador); clientes y segmentos (nuevos, en riesgo, cumpleaños, top, inactivos); niveles (bronce/plata/oro); campañas al pase (aparecen en el wallet); felicitación de cumpleaños automática; dashboard y métricas (sellos, canjes, nuevos vs recurrentes, embudo, tasa de retorno); sugerencias de IA que arman borradores de campaña y nunca envían solas. La app soporta ES/EN, pero esta landing v1 es solo español.
 
-No existe todavía / no vender como disponible: facturación, planes (Semilla–Barrio–Ciudad–Región), prueba de 14 días, reseñas de Google Business Profile, WhatsApp Business, sellado desde POS, Zapier, facturación electrónica. Si se menciona, un único renglón de roadmap: "Próximo: reseñas, WhatsApp y cobro desde el punto de venta." Nada más.
+No existe todavía / no vender como disponible: los planes por nivel (Semilla–Barrio–Ciudad–Región) del PRD original, reseñas de Google Business Profile, WhatsApp Business, sellado desde POS, Zapier, facturación electrónica. Si se menciona, un único renglón de roadmap: "Próximo: reseñas, WhatsApp y cobro desde el punto de venta." Nada más.
+
+**Pricing confirmado (2026-09-17, directo del fundador, reemplaza la nota de "sin facturación" del PRD original):** $20/mes o $200/año (misma funcionalidad, el anual ahorra ~2 meses). Oferta de fundadores por tiempo limitado para negocios que se unen ahora: badge de fundador en la app, soporte prioritario y un mes gratis. No hay tiers de features distintos entre mensual/anual — solo cambia el ciclo de facturación.
 
 No mencionar en la web: AWS, Cognito, Lambda, Aurora, Flutter, CDK, HMAC, "kuti", hackathon, Devpost — es producto, no infraestructura.
 
@@ -44,11 +46,15 @@ Versión actual de la app: `1.0.0+4`. Tabs del merchant: Home, Tarjetas, Cliente
 
 Metáfora de marca: el nido — los emprendedores consiguen clientes y los pierden porque no hay un nido que los haga volver.
 
-Logo real disponible en el repo hermano de la app Flutter (`/Volumes/Second Memory/dev/mobile/nidu-app/assets/icon/`): `nidus.png` (nido de arcos negros entrecruzados + wordmark NIDUS negro, sobre degradé pastel lila→rosa→amarillo — **ese degradé está prohibido como fondo de esta web**) y `nidus_bgremove.png` (mismo símbolo sin fondo, para favicon/nav/apple-touch-icon). El nido son líneas finas entrecruzadas tipo paja; nunca emoji de nido ni pájaro clipart. El usuario copia estos PNG a `public/brand/` en este proyecto.
+Logo real disponible en el repo hermano de la app Flutter (`/Volumes/Second Memory/dev/mobile/nidu-app/assets/icon/`): `nidus.png` (nido de arcos negros entrecruzados + wordmark NIDUS negro, sobre degradé pastel lila→rosa→amarillo) y `nidus_bgremove.png` (mismo símbolo sin fondo; en este proyecto se generó por extracción de alfa desde `nidus.png` ante la falta de acceso de escritura al repo Flutter). El nido son líneas finas entrecruzadas tipo paja; nunca emoji de nido ni pájaro clipart.
+
+**Actualización (2026-09-17, confirmado por el fundador):** el degradé pastel lila→rosa→amarillo (`#C9B6F2 → #B8C8F5 → #F6E7A8`) ya **no está prohibido**; es el fondo real del ícono de la app y se puede usar. Alcance decidido: (1) el isotipo/badge del logo lo lleva donde aparezca (nav, footer), (2) además se usa como acento puntual en 1-2 puntos de la landing (glow detrás del pase del hero, acento en el CTA final). El resto de la web sigue negro/blanco/morado como marca la paleta obligatoria del PRD — el degradé es acento de marca, no la paleta base del sitio.
 
 Voz: directa, íntima, corta, tuteo, frases que caben en un cartel. El fundador (Cristhian Recalde) aparece una sola vez, no en cada sección.
 
-Paleta obligatoria negro/blanco/morado, tipografía serif editorial (Fraunces/Newsreader/Source Serif 4) para display + sans geométrica (Geist/Satoshi/Inter) para UI, radios 20/24/28, sombras difusas de bajo contraste, motion 150/250/400ms con `ease-out-cubic` — todo especificado exhaustivamente en `idea.md` (fuente autoritativa del PRD de marketing, no sustituir ni reinterpretar el copy).
+Paleta obligatoria negro/blanco/morado, radios 20/24/28, motion 150/250/400ms con `ease-out-cubic` — especificado en `idea.md` (fuente autoritativa del PRD de marketing para el copy, no sustituir ni reinterpretar el texto).
+
+**Dirección visual actualizada (2026-09-17, confirmado por el fundador, reemplaza la tipografía serif editorial original):** estética Apple-style. Una sola familia tipográfica del sistema (`-apple-system, BlinkMacSystemFont, "SF Pro Display"...`) en todo el sitio, sin serif de display. Fondos casi-negro (`#000000`) en hero/nav/CTA final y gris muy claro (`#FBFBFD`) en secciones claras (reemplaza `--canvas #F5F5F5`). Sombras difusas grandes, radios generosos (28px), mucho espacio en blanco, botones píldora, nav con glass/blur real. El morado sigue siendo el único acento de color. Explorado y aprobado primero como Artifact de diseño ("Nidus — Rediseño Apple-style") antes de implementarse. La copia "Hola. Bienvenido." (canon de la intro de la app) ahora se usa como loader de bienvenida al cargar la web (una vez por sesión), en vez de aparecer en la sección de tensión.
 
 Única estadística permitida, con atribución obligatoria: "Un 5% más de retención puede subir tus ganancias hasta un 95%. — Bain & Company, Harvard Business Review". No inventar cifras de tracción, testimonios ni ratings de tienda.
 

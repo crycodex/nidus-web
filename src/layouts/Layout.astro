@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import PageLoader from '../components/PageLoader.astro';
 
 interface Props {
 	title?: string;
@@ -24,18 +25,11 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="is-loading">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href={canonicalURL} />
-
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700;800;900&display=swap"
-		/>
 
 		<title>{title}</title>
 		<meta name="description" content={description} />
@@ -56,28 +50,45 @@ const jsonLd = {
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
+		<PageLoader />
 		<slot />
 
 		<script>
-			const revealEls = document.querySelectorAll('[data-reveal]');
+			import { gsap } from 'gsap';
+			import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+			gsap.registerPlugin(ScrollTrigger);
+
 			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const revealEls = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
 
 			if (prefersReducedMotion) {
-				revealEls.forEach((el) => el.classList.add('is-visible'));
+				gsap.set(revealEls, { opacity: 1, y: 0 });
 			} else {
-				const observer = new IntersectionObserver(
-					(entries) => {
-						entries.forEach((entry) => {
-							if (entry.isIntersecting) {
-								entry.target.classList.add('is-visible');
-								observer.unobserve(entry.target);
-							}
-						});
-					},
-					{ threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-				);
+				revealEls.forEach((el) => {
+					const group = el.closest('[data-reveal-group]');
+					const siblings = group
+						? Array.from(group.querySelectorAll<HTMLElement>('[data-reveal]'))
+						: [el];
+					const index = siblings.indexOf(el);
 
-				revealEls.forEach((el) => observer.observe(el));
+					gsap.fromTo(
+						el,
+						{ opacity: 0, y: 22 },
+						{
+							opacity: 1,
+							y: 0,
+							duration: 0.7,
+							delay: index * 0.08,
+							ease: 'back.out(1.5)',
+							scrollTrigger: {
+								trigger: el,
+								start: 'top 88%',
+								once: true,
+							},
+						}
+					);
+				});
 			}
 		</script>
 	</body>

@@ -23,6 +23,15 @@
         ],
         "createdAt": "2026-09-18T00:14:31.449Z",
         "reason": "PRD idea.md sec.5 Seccion H: carta del fundador con 'una raya morada de 3px a la izquierda' explicitamente solo en esa card ('#FFFCF7 esta permitido solo aqui')"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/pages/index.astro"
+        ],
+        "createdAt": "2026-09-18T00:57:45.452Z",
+        "reason": "user confirmed: aprobado explicitamente en el Artifact de diseno 'Nidus - Rediseno Apple-style' (headline del hero con degrade de texto blanco->gris), pedido literal del usuario al aprobar el comp"
       }
     ]
   }
