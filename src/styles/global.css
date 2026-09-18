@@ -212,3 +212,24 @@ p {
 .reduced-motion [data-reveal] {
 	opacity: 1;
 }
+
+
+.carta-firma-link {
+	text-decoration: none;
+	color: var(--ink);
+	transition: color var(--t-fast) var(--ease-out-cubic);
+	display: inline-block;
+}
+
+.carta-firma-link:hover {
+	color: var(--purple-brand);
+}
+
+.carta-firma {
+	font-family: var(--font-ui);
+	font-weight: 600;
+	font-size: 15px;
+	letter-spacing: 0;
+	text-transform: none;
+	color: var(--ink);
+}

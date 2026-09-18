@@ -138,9 +138,10 @@ const planes = [
 					<p class="hero-micro">Disponible para iOS y Android. El cliente no instala Nidus.</p>
 				</div>
 
-				<div class="hero-visual" aria-hidden="true">
+				<div class="hero-visual">
 					<div id="hero-pass-wrap" class="hero-pass-wrap">
-						<PassCard size="hero" />
+						<PassCard size="hero" interactive />
+						<p class="hero-pass-hint">Toca el nombre, la recompensa o los sellos — es tu tarjeta.</p>
 					</div>
 				</div>
 			</div>
@@ -317,18 +318,21 @@ const planes = [
 		<section class="carta">
 			<div class="container">
 				<div class="carta-card" data-reveal>
-					<p>Hola.</p>
 					<p>
 						Nidus nació en noches en las que lo único despierto era el código y yo. No hubo plan
-						de negocio detrás — hubo insomnio, café frío y una idea que no me dejaba dormir:
+						de negocio detrás, hubo una idea que no me dejaba dormir:
 						ningún emprendedor debería perder al cliente que ya se ganó.
 					</p>
+					<br />
 					<p>
-						Programar es lo que sé hacer. Ayudar a que los negocios de mi gente crezcan es lo que
-						quiero hacer. Nidus es donde se juntan las dos cosas: un nido armado línea por línea,
+						Amo crear apps pero tambien quiero ayudar a que los negocios crezcan.
+						 Nidus es donde se juntan las dos cosas: un nido armado línea por línea,
 						para que tus clientes siempre encuentren el camino de vuelta.
 					</p>
-					<p class="carta-firma">— Cristhian Recalde, fundador</p>
+					<br />
+					<a class="carta-firma-link" href="https://www.linkedin.com/in/cristhian-recalde/" target="_blank" class="carta-link">
+						<p class="carta-firma"> Cristhian Recalde, fundador</p>
+					</a>
 				</div>
 			</div>
 		</section>
@@ -393,8 +397,20 @@ const planes = [
 			yoyo: true,
 		});
 
+		let isEditing = false;
+		card.querySelectorAll('.editable').forEach((field) => {
+			field.addEventListener('focus', () => {
+				isEditing = true;
+				gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
+			});
+			field.addEventListener('blur', () => {
+				isEditing = false;
+			});
+		});
+
 		const maxTilt = 10;
 		wrap.addEventListener('pointermove', (event) => {
+			if (isEditing) return;
 			const rect = wrap.getBoundingClientRect();
 			const px = (event.clientX - rect.left) / rect.width - 0.5;
 			const py = (event.clientY - rect.top) / rect.height - 0.5;
@@ -409,6 +425,7 @@ const planes = [
 		});
 
 		wrap.addEventListener('pointerleave', () => {
+			if (isEditing) return;
 			gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power2.out' });
 		});
 	}
@@ -506,6 +523,13 @@ const planes = [
 	.hero-pass-wrap :global(.pass-card) {
 		transform-style: preserve-3d;
 		will-change: transform;
+	}
+
+	.hero-pass-hint {
+		margin: 14px 0 0;
+		text-align: center;
+		font-size: 12.5px;
+		color: rgba(255, 255, 255, 0.45);
 	}
 
 	.section-title {
@@ -997,6 +1021,7 @@ const planes = [
 		line-height: 1.6;
 		margin: 0 0 14px;
 		color: var(--ink);
+		text-align: justify;
 	}
 
 	.carta-card p:last-child {

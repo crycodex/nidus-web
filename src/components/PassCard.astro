@@ -17,6 +17,7 @@ interface Props {
 	rule?: string;
 	filled?: number;
 	total?: number;
+	interactive?: boolean;
 }
 
 const COLORS: Record<PassColor, { from: string; to: string; check: string; shadow: string }> = {
@@ -38,6 +39,7 @@ const {
 	rule = '8 sellos = café gratis',
 	filled = 7,
 	total = 8,
+	interactive = false,
 } = Astro.props;
 
 const stamps = Array.from({ length: total });
@@ -45,7 +47,8 @@ const palette = COLORS[color];
 ---
 
 <div
-	class:list={['pass-card', size, className]}
+	class:list={['pass-card', size, className, { interactive }]}
+	data-interactive={interactive}
 	style={{
 		'--from': palette.from,
 		'--to': palette.to,
@@ -54,33 +57,75 @@ const palette = COLORS[color];
 >
 	<div class="pass-top">
 		<span class="pass-eyebrow">Tarjeta de sellos</span>
-		<span class="pass-business">{business}</span>
+		{
+			interactive ? (
+				<span
+					class="pass-business editable"
+					contenteditable="true"
+					spellcheck="false"
+					data-field="business"
+					data-placeholder="Nombre de tu negocio"
+					data-maxlength="24"
+				>
+					{business}
+				</span>
+			) : (
+				<span class="pass-business">{business}</span>
+			)
+		}
 	</div>
 
-	<div class="pass-stamps" role="img" aria-label={`${filled} de ${total} sellos completados`}>
+	<div
+		class:list={['pass-stamps', { clickable: interactive }]}
+		role={interactive ? 'group' : 'img'}
+		aria-label={`${filled} de ${total} sellos completados`}
+	>
 		{
-			stamps.map((_, i) => (
-				<span class:list={['stamp', { filled: i < filled }]}>
-					{i < filled && (
-						<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-							<path
-								d="M4 12.5L9.5 18L20 6"
-								fill="none"
-								stroke={palette.check}
-								stroke-width="2.6"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
-					)}
-				</span>
-			))
+			stamps.map((_, i) => {
+				const StampTag = interactive ? 'button' : 'span';
+				return (
+					<StampTag
+						type={interactive ? 'button' : undefined}
+						class:list={['stamp', { filled: i < filled }]}
+						data-index={interactive ? i : undefined}
+						aria-label={interactive ? `Sello ${i + 1}` : undefined}
+					>
+						{i < filled && (
+							<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+								<path
+									d="M4 12.5L9.5 18L20 6"
+									fill="none"
+									stroke={palette.check}
+									stroke-width="2.6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+						)}
+					</StampTag>
+				);
+			})
 		}
 	</div>
 
 	<div class="pass-reward">
 		<span class="reward-label">Recompensa</span>
-		<span class="reward-value">{rule}</span>
+		{
+			interactive ? (
+				<span
+					class="reward-value editable"
+					contenteditable="true"
+					spellcheck="false"
+					data-field="rule"
+					data-placeholder="Ej: 8 sellos = café gratis"
+					data-maxlength="40"
+				>
+					{rule}
+				</span>
+			) : (
+				<span class="reward-value">{rule}</span>
+			)
+		}
 	</div>
 
 	<div class="pass-footer">
@@ -105,6 +150,53 @@ const palette = COLORS[color];
 		<span>Hecho con Nidus</span>
 	</div>
 </div>
+
+<script>
+	// Runs once per page: wires up every interactive pass card (contenteditable
+	// name/reward fields + clickable stamps), not just the one that triggered it.
+	const initInteractivePasses = () => {
+		document.querySelectorAll<HTMLElement>('.pass-card.interactive').forEach((card) => {
+			if (card.dataset.wired === '1') return;
+			card.dataset.wired = '1';
+
+			card.querySelectorAll<HTMLElement>('.editable').forEach((field) => {
+				const maxLength = Number(field.dataset.maxlength ?? '999');
+
+				field.addEventListener('input', () => {
+					if (field.textContent && field.textContent.length > maxLength) {
+						field.textContent = field.textContent.slice(0, maxLength);
+						// keep the caret at the end after trimming
+						const range = document.createRange();
+						range.selectNodeContents(field);
+						range.collapse(false);
+						const selection = window.getSelection();
+						selection?.removeAllRanges();
+						selection?.addRange(range);
+					}
+				});
+
+				field.addEventListener('paste', (event) => {
+					event.preventDefault();
+					const text = event.clipboardData?.getData('text/plain') ?? '';
+					document.execCommand('insertText', false, text.slice(0, maxLength));
+				});
+
+				field.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter') event.preventDefault();
+				});
+			});
+
+			card.querySelectorAll<HTMLButtonElement>('.stamp[data-index]').forEach((stamp) => {
+				stamp.addEventListener('click', () => {
+					stamp.classList.toggle('filled');
+				});
+			});
+		});
+	};
+
+	initInteractivePasses();
+	document.addEventListener('astro:page-load', initInteractivePasses);
+</script>
 
 <style>
 	.pass-card {
@@ -169,6 +261,29 @@ const palette = COLORS[color];
 		font-size: 18px;
 	}
 
+	.editable {
+		outline: none;
+		border-radius: 6px;
+		padding: 1px 4px;
+		margin: -1px -4px;
+		cursor: text;
+		transition: background var(--t-fast) var(--ease-out-cubic);
+	}
+
+	.editable:hover {
+		background: rgba(255, 255, 255, 0.12);
+	}
+
+	.editable:focus {
+		background: rgba(255, 255, 255, 0.18);
+		box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.5);
+	}
+
+	.editable:empty::before {
+		content: attr(data-placeholder);
+		opacity: 0.55;
+	}
+
 	.pass-stamps {
 		display: flex;
 		gap: 8px;
@@ -184,6 +299,23 @@ const palette = COLORS[color];
 		justify-content: center;
 		background: rgba(255, 255, 255, 0.14);
 		border: 1.5px dashed rgba(255, 255, 255, 0.4);
+		padding: 0;
+		font: inherit;
+		color: inherit;
+	}
+
+	.pass-stamps.clickable .stamp {
+		cursor: pointer;
+		transition: transform var(--t-fast) var(--ease-out-cubic), background var(--t-fast) var(--ease-out-cubic);
+	}
+
+	.pass-stamps.clickable .stamp:hover {
+		transform: scale(1.08);
+		background: rgba(255, 255, 255, 0.26);
+	}
+
+	.pass-stamps.clickable .stamp.filled:hover {
+		background: var(--paper);
 	}
 
 	.pass-card.compact .stamp {
