@@ -1,0 +1,26 @@
+---
+interface Props {
+	size?: number;
+	class?: string;
+}
+
+const { size = 24, class: className = '' } = Astro.props;
+const width = Math.round(size * 2.78);
+---
+
+<img
+	src="/brand/nidus_alt.png"
+	width={width}
+	height={size}
+	alt=""
+	aria-hidden="true"
+	class:list={['nido-logo', className]}
+/>
+
+<style>
+	.nido-logo {
+		display: block;
+		object-fit: cover;
+		object-position: center;
+	}
+</style>

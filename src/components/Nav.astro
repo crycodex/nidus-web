@@ -1,5 +1,5 @@
 ---
-import NidoMark from './NidoMark.astro';
+import NidoMark from './NidoMark_alt.astro';
 
 const links = [
 	{ href: '#producto', label: 'Producto', section: 'producto' },
@@ -15,7 +15,7 @@ const links = [
 
 	<nav class="notch notch-menu" aria-label="Secciones" id="notch-menu">
 		<a href="#top" class="notch-logo" aria-label="Nidus, inicio">
-			<NidoMark variant="light" size={22} showWordmark={false} />
+			<NidoMark size={18} />
 		</a>
 		<span class="notch-pill" id="notch-pill" aria-hidden="true"></span>
 		{
@@ -31,7 +31,7 @@ const links = [
 
 	<div class="notch notch-mobile" id="notch-mobile">
 		<a href="#top" class="mobile-brand" aria-label="Nidus, inicio">
-			<NidoMark variant="light" size={20} showWordmark={false} />
+			<NidoMark size={16} />
 		</a>
 		<button
 			id="mobile-toggle"
@@ -146,8 +146,8 @@ const links = [
 		display: none;
 		align-items: center;
 		justify-content: center;
-		width: 44px;
 		height: 44px;
+		padding-inline: 12px;
 	}
 
 	.notch-menu {
