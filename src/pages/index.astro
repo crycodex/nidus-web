@@ -4,6 +4,9 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import NidoMark from '../components/NidoMark.astro';
 import PassCard from '../components/PassCard.astro';
+import BackgroundBeams from '../components/BackgroundBeams.astro';
+
+const SUPPORT_EMAIL = 'soporte@nidu.app';
 
 const APP_STORE_URL = 'https://apps.apple.com/app/nidus'; // TODO: reemplazar cuando esté publicada
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.nidu'; // TODO: reemplazar cuando esté publicada
@@ -331,11 +334,42 @@ const planes = [
 		</section>
 
 		<!-- I: CTA final -->
-		<section class="cta-final">
+	<!-- 	<section class="cta-final">
 			<div class="container cta-final-inner" data-reveal>
 				<h2>Pon el nido en el mostrador esta semana.</h2>
 				<a href={APP_STORE_URL} class="btn btn-primary on-dark cta-final-btn">Descargar Nidus</a>
 				<p class="cta-final-note">El cliente sigue sin instalar nada.</p>
+			</div>
+		</section> -->
+
+		<!-- Lista de espera -->
+		<section class="waitlist" id="lista-espera">
+			<BackgroundBeams />
+			<div class="container waitlist-inner" data-reveal>
+				<h2>Sé de los primeros en usar Nidus.</h2>
+				<p class="waitlist-lead">
+					Estamos afinando el lanzamiento en Apple Wallet y Google Wallet. Dejanos tu correo y te
+					avisamos apenas esté lista — con tu lugar reservado en la oferta de fundadores.
+				</p>
+
+				<form class="waitlist-form" id="waitlist-form" data-support-email={SUPPORT_EMAIL}>
+					<input
+						type="email"
+						name="email"
+						required
+						placeholder="tu@negocio.com"
+						aria-label="Tu correo"
+						class="waitlist-input"
+					/>
+					<button type="submit" class="btn btn-primary on-dark waitlist-submit">
+						Avisarme cuando esté lista
+					</button>
+				</form>
+				<p class="waitlist-success" id="waitlist-success" hidden>
+					Listo. Te avisamos apenas esté lista para descargar.
+				</p>
+
+				<p class="waitlist-note">Sin spam. Un solo correo, cuando lancemos.</p>
 			</div>
 		</section>
 	</main>
@@ -378,6 +412,17 @@ const planes = [
 			gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power2.out' });
 		});
 	}
+
+	// Front-end only: no waitlist backend wired up yet. Swap this for a real
+	// endpoint (serverless function, Formspree, ESP form action, etc.) before launch.
+	const waitlistForm = document.getElementById('waitlist-form') as HTMLFormElement | null;
+	const waitlistSuccess = document.getElementById('waitlist-success');
+
+	waitlistForm?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		waitlistForm.hidden = true;
+		if (waitlistSuccess) waitlistSuccess.hidden = false;
+	});
 </script>
 
 <style>
@@ -1011,6 +1056,93 @@ const planes = [
 		color: rgba(255, 255, 255, 0.8);
 		font-size: 14px;
 		margin: 0;
+	}
+
+	.waitlist {
+		position: relative;
+		background: var(--near-black);
+		overflow: hidden;
+	}
+
+	.waitlist-inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 20px;
+	}
+
+	.waitlist-inner h2 {
+		color: var(--paper);
+		font-size: clamp(2rem, 4.5vw, 3rem);
+		max-width: 18ch;
+	}
+
+	.waitlist-lead {
+		margin: 0;
+		color: rgba(255, 255, 255, 0.68);
+		font-size: 17px;
+		line-height: 1.6;
+		max-width: 52ch;
+	}
+
+	.waitlist-form {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		width: 100%;
+		max-width: 420px;
+		margin-top: 8px;
+	}
+
+	.waitlist-input {
+		height: 52px;
+		padding-inline: 22px;
+		border-radius: var(--r-hero);
+		border: 1.5px solid rgba(255, 255, 255, 0.16);
+		background: rgba(255, 255, 255, 0.06);
+		color: var(--paper);
+		font-family: var(--font-ui);
+		font-size: 15px;
+	}
+
+	.waitlist-input::placeholder {
+		color: rgba(255, 255, 255, 0.4);
+	}
+
+	.waitlist-input:focus-visible {
+		outline: 2px solid var(--purple);
+		outline-offset: 2px;
+	}
+
+	.waitlist-submit {
+		width: 100%;
+	}
+
+	.waitlist-success {
+		margin: 8px 0 0;
+		color: var(--paper);
+		font-size: 15px;
+		font-weight: 600;
+	}
+
+	.waitlist-note {
+		margin: 4px 0 0;
+		color: rgba(255, 255, 255, 0.45);
+		font-size: 13px;
+	}
+
+	@media (min-width: 480px) {
+		.waitlist-form {
+			flex-direction: row;
+		}
+
+		.waitlist-submit {
+			width: auto;
+			white-space: nowrap;
+		}
 	}
 
 	@media (min-width: 900px) {

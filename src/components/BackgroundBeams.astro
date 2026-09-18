@@ -1,0 +1,66 @@
+---
+// Native SVG/CSS recreation of an animated "beams" background — no React/framer-motion
+// dependency needed, since this project is Astro + vanilla CSS (see PRODUCT.md Stack).
+const beamCount = 10;
+const beams = Array.from({ length: beamCount }, (_, i) => i);
+---
+
+<div class="beams" aria-hidden="true">
+	{
+		beams.map((i) => (
+			<span
+				class="beam"
+				style={{
+					left: `${6 + i * (88 / (beamCount - 1))}%`,
+					animationDelay: `${(i % 5) * -1.6}s`,
+					animationDuration: `${9 + (i % 4) * 1.7}s`,
+				}}
+			/>
+		))
+	}
+</div>
+
+<style>
+	.beams {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 40%, transparent 78%);
+		-webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 40%, transparent 78%);
+	}
+
+	.beam {
+		position: absolute;
+		top: -30%;
+		width: 1.5px;
+		height: 160%;
+		background: linear-gradient(180deg, transparent 0%, #18ccfc 20%, #6344f5 55%, #ae48ff 80%, transparent 100%);
+		opacity: 0.32;
+		transform-origin: center;
+		animation-name: nidus-beam-drift;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+	}
+
+	@keyframes nidus-beam-drift {
+		0% {
+			transform: translateY(-6%) rotate(14deg);
+			opacity: 0.18;
+		}
+		50% {
+			transform: translateY(6%) rotate(14deg);
+			opacity: 0.55;
+		}
+		100% {
+			transform: translateY(-6%) rotate(14deg);
+			opacity: 0.18;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.beam {
+			animation: none;
+			opacity: 0.28;
+		}
+	}
+</style>
