@@ -43,6 +43,26 @@
 
 html {
 	scroll-behavior: smooth;
+	scroll-snap-type: y proximity;
+}
+
+main > section {
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	scroll-snap-align: start;
+	scroll-snap-stop: normal;
+}
+
+@media (max-height: 700px), (max-width: 640px) {
+	main > section {
+		min-height: 0;
+	}
+
+	html {
+		scroll-snap-type: none;
+	}
 }
 
 body {

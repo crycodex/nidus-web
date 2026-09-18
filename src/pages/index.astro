@@ -218,25 +218,27 @@ const planes = [
 
 		<!-- Galería de pases -->
 		<section class="galeria">
-			<div class="container galeria-header">
+			<div class="container galeria-header" data-reveal>
 				<h2 class="section-title">Un pase para cada negocio.</h2>
 				<p class="galeria-lead">Mismo nido, el color y la regla que tú definas.</p>
 			</div>
-			<div class="galeria-track" data-reveal-group>
-				{
-					galeriaPases.map((p) => (
-						<div class="galeria-item" data-reveal>
-							<PassCard
-								size="compact"
-								color={p.color}
-								business={p.business}
-								rule={p.rule}
-								filled={p.filled}
-								total={p.total}
-							/>
-						</div>
-					))
-				}
+			<div class="galeria-viewport">
+				<div class="galeria-track">
+					{
+						[...galeriaPases, ...galeriaPases].map((p, i) => (
+							<div class="galeria-item" aria-hidden={i >= galeriaPases.length}>
+								<PassCard
+									size="compact"
+									color={p.color}
+									business={p.business}
+									rule={p.rule}
+									filled={p.filled}
+									total={p.total}
+								/>
+							</div>
+						))
+					}
+				</div>
 			</div>
 		</section>
 
@@ -391,12 +393,21 @@ const planes = [
 		grid-template-columns: 1fr;
 		gap: 56px;
 		align-items: center;
+		justify-items: center;
+	}
+
+	.hero-copy {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
 	}
 
 	.hero-copy h1 {
 		font-size: clamp(2.75rem, 6.4vw, 5.5rem);
 		margin-top: 14px;
 		max-width: 14ch;
+		margin-inline: auto;
 		letter-spacing: -0.03em;
 		background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
 		-webkit-background-clip: text;
@@ -410,11 +421,13 @@ const planes = [
 		line-height: 1.5;
 		color: rgba(255, 255, 255, 0.78);
 		max-width: 46ch;
+		margin-inline: auto;
 	}
 
 	.hero-ctas {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		gap: 14px;
 		margin-top: 36px;
 	}
@@ -454,6 +467,8 @@ const planes = [
 		font-size: clamp(1.75rem, 3.6vw, 2.5rem);
 		margin-bottom: 48px;
 		max-width: 18ch;
+		margin-inline: auto;
+		text-align: center;
 	}
 
 	.como {
@@ -465,6 +480,13 @@ const planes = [
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 40px;
+		text-align: center;
+	}
+
+	.step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.step-n {
@@ -489,6 +511,7 @@ const planes = [
 		font-size: 16px;
 		line-height: 1.6;
 		max-width: 42ch;
+		margin-inline: auto;
 	}
 
 	.nido-cliente {
@@ -500,6 +523,14 @@ const planes = [
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 48px;
+		align-items: center;
+		justify-items: center;
+	}
+
+	.nido-cliente-copy {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
 		align-items: center;
 	}
 
@@ -522,6 +553,7 @@ const planes = [
 		margin: 28px 0 0;
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		gap: 14px;
 	}
 
@@ -570,6 +602,10 @@ const planes = [
 		border-radius: var(--r-card);
 		padding: 28px;
 		box-shadow: var(--shadow-soft);
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.feature-card h3 {
@@ -603,6 +639,8 @@ const planes = [
 		box-shadow: var(--shadow-soft);
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		text-align: center;
 		gap: 6px;
 	}
 
@@ -634,22 +672,47 @@ const planes = [
 	.galeria-lead {
 		color: rgba(255, 255, 255, 0.6);
 		font-size: 16px;
-		margin: 0;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.galeria-viewport {
+		overflow: hidden;
+		width: 100%;
+		mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 	}
 
 	.galeria-track {
 		display: flex;
 		gap: 20px;
-		overflow-x: auto;
-		padding: 4px 24px 20px;
-		margin: 0 -24px;
-		scroll-snap-type: x proximity;
-		scrollbar-width: thin;
+		width: max-content;
+		padding: 4px 0 20px;
+		animation: nidus-marquee 32s linear infinite;
+	}
+
+	.galeria-viewport:hover .galeria-track {
+		animation-play-state: paused;
 	}
 
 	.galeria-item {
 		flex: 0 0 auto;
-		scroll-snap-align: start;
+	}
+
+	@keyframes nidus-marquee {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.galeria-track {
+			animation: none;
+			overflow-x: auto;
+			width: 100%;
+		}
 	}
 
 	.precios {
@@ -662,6 +725,7 @@ const planes = [
 		grid-template-columns: 1fr;
 		gap: 20px;
 		max-width: 720px;
+		margin-inline: auto;
 	}
 
 	.plan-card {
@@ -672,6 +736,8 @@ const planes = [
 		box-shadow: var(--shadow-soft);
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		text-align: center;
 		gap: 10px;
 	}
 
@@ -726,16 +792,22 @@ const planes = [
 	}
 
 	.plan-card .btn {
-		align-self: flex-start;
+		align-self: center;
+		width: 100%;
 	}
 
 	.founders-card {
 		margin-top: 24px;
 		max-width: 720px;
+		margin-inline: auto;
 		background: var(--near-black);
 		color: var(--paper);
 		border-radius: var(--r-panel);
 		padding: 32px 36px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.founders-badge {
@@ -767,6 +839,7 @@ const planes = [
 		margin: 18px 0 0;
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		gap: 12px 24px;
 	}
 
@@ -797,6 +870,14 @@ const planes = [
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 40px;
+		justify-items: center;
+	}
+
+	.ia-copy {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.ia-copy h2 {
@@ -810,6 +891,12 @@ const planes = [
 		line-height: 1.6;
 		color: var(--muted);
 		max-width: 48ch;
+	}
+
+	.ia-examples {
+		text-align: center;
+		width: 100%;
+		max-width: 480px;
 	}
 
 	.ia-examples-label {
@@ -856,6 +943,7 @@ const planes = [
 		border-left: 3px solid var(--purple);
 		border-radius: var(--r-panel);
 		padding: 36px 40px;
+		text-align: center;
 	}
 
 	.carta-card p {

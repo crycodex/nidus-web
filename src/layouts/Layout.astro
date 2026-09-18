@@ -90,6 +90,33 @@ const jsonLd = {
 					);
 				});
 			}
+
+			// Each full-viewport section arrives as one soft, unified entrance.
+			const sections = Array.from(document.querySelectorAll<HTMLElement>('main > section'));
+
+			if (prefersReducedMotion) {
+				gsap.set(sections, { opacity: 1, scale: 1 });
+			} else {
+				sections.forEach((section, i) => {
+					if (i === 0) return; // hero is already visible on load
+
+					gsap.fromTo(
+						section,
+						{ opacity: 0, scale: 0.96 },
+						{
+							opacity: 1,
+							scale: 1,
+							duration: 0.9,
+							ease: 'power3.out',
+							scrollTrigger: {
+								trigger: section,
+								start: 'top 78%',
+								once: true,
+							},
+						}
+					);
+				});
+			}
 		</script>
 	</body>
 </html>
