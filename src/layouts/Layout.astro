@@ -2,26 +2,36 @@
 import '../styles/global.css';
 import PageLoader from '../components/PageLoader.astro';
 import ComingSoonDialog from '../components/ComingSoonDialog.astro';
+import {
+	SITE_URL,
+	SITE_NAME,
+	SITE_TITLE,
+	SITE_DESCRIPTION,
+	OG_IMAGE,
+	OG_IMAGE_ALT,
+	LOCALE,
+	baseJsonLd,
+} from '../lib/site';
 
 interface Props {
 	title?: string;
 	description?: string;
+	ogImage?: string;
+	extraJsonLd?: Record<string, unknown>[];
 }
 
 const {
-	title = 'Nidus — Fideliza a tus clientes sin fricción',
-	description = 'Tarjetas de fidelización digitales en Apple Wallet y Google Wallet para negocios locales. El cliente no descarga nada. Tú sellas en el mostrador.',
+	title = SITE_TITLE,
+	description = SITE_DESCRIPTION,
+	ogImage = OG_IMAGE,
+	extraJsonLd = [],
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, 'https://nidu.app');
-
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonicalURL = pathname === '/' ? `${SITE_URL}/` : `${SITE_URL}${pathname}`;
 const jsonLd = {
 	'@context': 'https://schema.org',
-	'@type': 'SoftwareApplication',
-	name: 'Nidus',
-	applicationCategory: 'BusinessApplication',
-	operatingSystem: 'iOS, Android',
-	url: 'https://nidu.app',
+	'@graph': [...baseJsonLd, ...extraJsonLd],
 };
 ---
 
@@ -31,26 +41,45 @@ const jsonLd = {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href={canonicalURL} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="alternate" type="text/plain" href="/llms.txt" title="Nidus para modelos de lenguaje" />
+		<link rel="manifest" href="/manifest.webmanifest" />
 
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="author" content={SITE_NAME} />
+		<meta name="theme-color" content="#111111" />
+		<meta name="color-scheme" content="light" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="geo.region" content="EC" />
 
 		<meta property="og:type" content="website" />
+		<meta property="og:locale" content={LOCALE} />
+		<meta property="og:site_name" content={SITE_NAME} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />
-		<meta property="og:image" content="https://nidu.app/og-image.png" />
-		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content={OG_IMAGE_ALT} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:type" content="image/png" />
 
-		<link rel="icon" type="image/png" href="/brand/nidus_bgremove.png" media="(prefers-color-scheme: light)" />
-		<link rel="icon" type="image/png" href="/brand/nidus_bgremove.png" media="(prefers-color-scheme: dark)" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
+
+		<link rel="icon" type="image/png" href="/brand/nidus_bgremove.png" />
 		<link rel="apple-touch-icon" href="/brand/nidus_bgremove.png" />
-		<meta name="theme-color" content="#111111" />
 		<meta name="generator" content={Astro.generator} />
 
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
+		<a class="skip-link" href="#top">Saltar al contenido</a>
 		<PageLoader />
 		<slot />
 		<ComingSoonDialog />
@@ -93,14 +122,13 @@ const jsonLd = {
 				});
 			}
 
-			// Each full-viewport section arrives as one soft, unified entrance.
 			const sections = Array.from(document.querySelectorAll<HTMLElement>('main > section'));
 
 			if (prefersReducedMotion) {
 				gsap.set(sections, { opacity: 1, scale: 1 });
 			} else {
 				sections.forEach((section, i) => {
-					if (i === 0) return; // hero is already visible on load
+					if (i === 0) return;
 
 					gsap.fromTo(
 						section,

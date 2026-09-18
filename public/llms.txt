@@ -1,0 +1,39 @@
+# Nidus
+
+> Tarjetas de fidelización digitales en Apple Wallet y Google Wallet para negocios locales. El cliente no descarga nada.
+
+Nidus (legal y dominio: Nidu, https://nidu.app) es la app para el negocio que emite pases reales en Apple Wallet y Google Wallet. El cliente se inscribe escaneando un QR del mostrador y guarda el pase sin instalar ninguna app ni crear cuenta. El negocio sella o canjea apuntando la cámara al QR del pase.
+
+- Sitio: https://nidu.app
+- Contacto: soporte@nidu.app
+- Marca pública: Nidus
+- Nombre legal / dominio: Nidu
+- Geografía: Ecuador primero
+- Idioma de esta web: español
+- App: iOS y Android (próximamente)
+- Fundador: Cristhian Recalde (https://www.linkedin.com/in/cristhian-recalde/)
+
+## Cómo funciona
+
+1. El negocio publica su tarjeta, elige el rubro y Nidus arma sellos y recompensa. Imprime el QR.
+2. El cliente se une en unos 20 segundos: escanea, pone su nombre y guarda el pase. Cero apps.
+3. En cada visita el negocio abre Sellar, apunta al pase y suma el sello. Al completar, canjea. El wallet se actualiza solo.
+
+## Qué no es
+
+No es otra app que el cliente tenga que descargar. No es una tarjeta de cartón. No es un CRM que el dueño nunca abre.
+
+## Tipos de pase
+
+Fidelización, cupón, entrada, membresía, tarjeta de regalo, pase e invitaciones, y niveles Bronce / Plata / Oro.
+
+## Precio
+
+Un precio, sin letra chica. El monto se anuncia al lanzamiento. Hay oferta de fundadores por tiempo limitado (badge, soporte prioritario y un mes gratis).
+
+## Documentos
+
+- Home: https://nidu.app
+- Privacidad: https://nidu.app/privacidad
+- Términos: https://nidu.app/terminos
+- Más contexto: https://nidu.app/llms-full.txt

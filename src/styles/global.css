@@ -76,6 +76,24 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
+.skip-link {
+	position: absolute;
+	left: 16px;
+	top: 12px;
+	z-index: 100;
+	padding: 10px 16px;
+	background: var(--paper);
+	color: var(--ink);
+	border-radius: 999px;
+	font-weight: 700;
+	text-decoration: none;
+	transform: translateY(-140%);
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
 img,
 svg {
 	display: block;

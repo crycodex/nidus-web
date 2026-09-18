@@ -1,0 +1,58 @@
+# Nidus — contexto completo para modelos
+
+Nidus es una plataforma de fidelización para negocios locales. La marca que ve el usuario es **Nidus**. El nombre legal, el dominio y el correo usan **Nidu** (`nidu.app`, `soporte@nidu.app`).
+
+## Problema
+
+Los emprendedores consiguen clientes y los pierden porque no hay un nido que los haga volver. Las tarjetas de cartón se pierden. Pedirle al cliente otra app o una cuenta es fricción. Un CRM que el dueño no abre no cambia lo que pasa en el mostrador.
+
+## Solución
+
+El nido está en el wallet del cliente, no en otra app. Nidus emite tarjetas (pases) reales en Apple Wallet y Google Wallet. El cliente ya abre esa app todos los días.
+
+- Cliente: escanea un QR, pone su nombre, guarda el pase. Cero apps, cero cuentas, cero contraseñas.
+- Negocio: abre Nidus, elige Sellar, apunta al QR del pase. Suma sello o canjea. El pase se actualiza solo.
+
+## Público
+
+Dueño o admin de un negocio local en Ecuador: café, barbería, restaurante, gimnasio, tienda de ropa, suplementos, farmacia, agencia u otro local. Opera el local; no escribe copy de marketing.
+
+Esta web (https://nidu.app) convence al dueño de usar Nidus. No es la página de inscripción del cliente.
+
+## Cómo funciona (pasos)
+
+1. Publica tu tarjeta: eliges el rubro. Nidus arma sellos y recompensa. Imprimes el QR.
+2. El cliente se une en 20 segundos: escanea, pone su nombre, guarda el pase. Cero apps.
+3. Tú sellas en el mostrador: abres Sellar, apuntas al pase, listo. Cuando completa, canjeas.
+
+## Capacidades actuales
+
+Pases en Apple Wallet y Google Wallet; inscripción por QR; sellado y canje con cámara; plantillas por rubro; tipos de pase (fidelización, cupón, entrada, membresía, tarjeta de regalo, pase/invitación); modos (sellos, puntos, visitas, consumo); sucursales y equipo; clientes y segmentos; niveles Bronce/Plata/Oro; campañas que llegan al pase en el wallet; felicitación de cumpleaños automática (09:00 America/Guayaquil); métricas; sugerencias de IA que arman borradores y nunca envían solas.
+
+## Qué no está disponible todavía
+
+Reseñas de Google, WhatsApp Business y cobro desde el punto de venta. Roadmap público: “Próximo: reseñas, WhatsApp y cobro desde el punto de venta.”
+
+La app del negocio está en lista de espera (próximamente en iOS y Android). El precio se anuncia al lanzamiento.
+
+## Voz
+
+Directa, íntima, corta, tuteo. Frases que caben en un cartel. No inventar cifras de tracción, testimonios ni ratings de tienda. La única estadística citada es: “Un 5% más de retención puede subir tus ganancias hasta un 95%.” — Bain & Company, Harvard Business Review.
+
+## Preguntas frecuentes
+
+- ¿Qué es Nidus? La app para el negocio que emite tarjetas de fidelización reales en Apple Wallet y Google Wallet. El cliente se une con un QR y no instala nada.
+- ¿El cliente descarga una app? No.
+- ¿Cómo sella el negocio? Abre Sellar y apunta al QR del pase.
+- ¿Para quién es? Para el local, no para la cadena.
+- ¿Cuánto cuesta? Un precio, sin letra chica. Se anuncia al lanzar.
+
+## Enlaces
+
+- https://nidu.app
+- https://nidu.app/#como
+- https://nidu.app/#lista-espera
+- https://nidu.app/privacidad
+- https://nidu.app/terminos
+- mailto:soporte@nidu.app
+- https://www.linkedin.com/in/cristhian-recalde/

@@ -6,6 +6,7 @@ import PassCard from '../components/PassCard.astro';
 import type { PassColor, PassKind } from '../components/PassCard.astro';
 import BackgroundBeams from '../components/BackgroundBeams.astro';
 import HeroShapeWaves from '../components/HeroShapeWaves.astro';
+import { faqs, homeJsonLd } from '../lib/site';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
 
@@ -19,7 +20,7 @@ const comoFunciona = [
 	},
 	{
 		n: '2',
-		title: 'El cliente se une en 20 segundos',
+		title: 'El cliente se une en -10 segundos',
 		body: 'Escanea, pone su nombre, guarda el pase. Cero apps.',
 	},
 	{
@@ -161,7 +162,7 @@ const planes = [
 ];
 ---
 
-<Layout>
+<Layout extraJsonLd={homeJsonLd}>
 	<Nav />
 
 	<main id="top">
@@ -394,7 +395,12 @@ const planes = [
 						para que tus clientes siempre encuentren el camino de vuelta.
 					</p>
 					<br />
-					<a class="carta-firma-link" href="https://www.linkedin.com/in/cristhian-recalde/" target="_blank" class="carta-link">
+					<a
+						class="carta-firma-link"
+						href="https://www.linkedin.com/in/cristhian-recalde/"
+						target="_blank"
+						rel="me noopener noreferrer"
+					>
 						<p class="carta-firma"> Cristhian Recalde, fundador</p>
 					</a>
 				</div>
@@ -409,6 +415,22 @@ const planes = [
 				<p class="cta-final-note">El cliente sigue sin instalar nada.</p>
 			</div>
 		</section> -->
+
+		<section class="faq" id="faq">
+			<div class="container">
+				<h2 class="section-title">Preguntas frecuentes</h2>
+				<div class="faq-list">
+					{
+						faqs.map((item) => (
+							<details class="faq-item" data-reveal>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</div>
+		</section>
 
 		<!-- Lista de espera -->
 		<section class="waitlist" id="lista-espera">
@@ -1220,6 +1242,45 @@ const planes = [
 		color: rgba(255, 255, 255, 0.8);
 		font-size: 14px;
 		margin: 0;
+	}
+
+	.faq {
+		background: var(--paper);
+		padding-block: 96px;
+	}
+
+	.faq-list {
+		max-width: 720px;
+		margin-inline: auto;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.faq-item {
+		background: var(--canvas);
+		border-radius: var(--r-card);
+		padding: 4px 22px;
+	}
+
+	.faq-item summary {
+		cursor: pointer;
+		font-weight: 650;
+		font-size: 17px;
+		line-height: 1.3;
+		padding-block: 18px;
+		list-style: none;
+	}
+
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-item p {
+		margin: 0 0 18px;
+		color: var(--muted);
+		font-size: 15px;
+		line-height: 1.55;
 	}
 
 	.waitlist {
