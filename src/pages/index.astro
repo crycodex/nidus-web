@@ -2,14 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import NidoMark from '../components/NidoMark.astro';
 import PassCard from '../components/PassCard.astro';
 import BackgroundBeams from '../components/BackgroundBeams.astro';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
 
-const APP_STORE_URL = 'https://apps.apple.com/app/nidus'; // TODO: reemplazar cuando esté publicada
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.nidu'; // TODO: reemplazar cuando esté publicada
+// TODO: reemplazar cuando la app esté publicada; el botón "Descargar" debería
+// abrir ambas tiendas o detectar la plataforma del visitante.
+const APP_STORE_URL = 'https://apps.apple.com/app/nidus';
 
 const comoFunciona = [
 	{
@@ -349,7 +349,7 @@ const planes = [
 				<h2>Sé de los primeros en usar Nidus.</h2>
 				<p class="waitlist-lead">
 					Estamos afinando el lanzamiento en Apple Wallet y Google Wallet. Dejanos tu correo y te
-					avisamos apenas esté lista — con tu lugar reservado en la oferta de fundadores.
+					avisamos apenas esté lista con tu lugar reservado en la oferta de fundadores.
 				</p>
 
 				<form class="waitlist-form" id="waitlist-form" data-support-email={SUPPORT_EMAIL}>
