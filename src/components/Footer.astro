@@ -2,6 +2,30 @@
 import NidoMark from './NidoMark.astro';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
+
+const producto = [
+	{ href: '/#producto', label: 'Producto' },
+	{ href: '/#como', label: 'Cómo funciona' },
+	{ href: '/#para-quien', label: 'Para quién' },
+	{ href: '/#pases', label: 'Tipos de pase' },
+	{ href: '/#precios', label: 'Precios' },
+	{ href: '/#ia', label: 'IA' },
+];
+
+const pases = [
+	{ href: '/#pases', label: 'Fidelización' },
+	{ href: '/#pases', label: 'Cupón' },
+	{ href: '/#pases', label: 'Entrada' },
+	{ href: '/#pases', label: 'Membresía' },
+	{ href: '/#pases', label: 'Tarjeta de regalo' },
+	{ href: '/#pases', label: 'Pase' },
+	{ href: '/#pases', label: 'Niveles' },
+];
+
+const legal = [
+	{ href: '/privacidad', label: 'Privacidad' },
+	{ href: '/terminos', label: 'Términos' },
+];
 ---
 
 <footer class="site-footer">
@@ -9,27 +33,36 @@ const SUPPORT_EMAIL = 'soporte@nidu.app';
 		<div class="footer-brand">
 			<NidoMark variant="dark" size={30} />
 			<p class="footer-tagline">El nido que hace que tus clientes vuelvan.</p>
+			<a href="/#descargar" class="btn btn-primary footer-cta">Descargar Nidus</a>
 		</div>
 
 		<div class="footer-cols">
 			<div class="footer-col">
 				<span class="footer-col-title">Producto</span>
-				<a href="#producto">Producto</a>
-				<a href="#como">Cómo funciona</a>
-				<a href="#precios">Precios</a>
-				<a href="#ia">IA</a>
+				{producto.map((item) => (
+					<a href={item.href}>{item.label}</a>
+				))}
+			</div>
+
+			<div class="footer-col">
+				<span class="footer-col-title">Pases</span>
+				{pases.map((item) => (
+					<a href={item.href}>{item.label}</a>
+				))}
 			</div>
 
 			<div class="footer-col">
 				<span class="footer-col-title">Legal</span>
-				<a href="/privacidad">Privacidad</a>
-				<a href="/terminos">Términos</a>
+				{legal.map((item) => (
+					<a href={item.href}>{item.label}</a>
+				))}
 			</div>
 
 			<div class="footer-col">
 				<span class="footer-col-title">Contacto</span>
 				<a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
 				<a href="https://nidu.app">nidu.app</a>
+				<a href="/#lista-espera">Lista de espera</a>
 			</div>
 		</div>
 	</div>
@@ -39,6 +72,7 @@ const SUPPORT_EMAIL = 'soporte@nidu.app';
 	<div class="container footer-bottom">
 		<p class="footer-copy">© 2026 Nidu</p>
 		<p class="footer-copy">Hecho en Ecuador</p>
+		<p class="footer-copy footer-roadmap">Próximo: reseñas, WhatsApp y cobro desde el punto de venta.</p>
 	</div>
 </footer>
 
@@ -71,11 +105,18 @@ const SUPPORT_EMAIL = 'soporte@nidu.app';
 		margin: 0;
 	}
 
+	.footer-cta {
+		margin-top: 4px;
+		height: 44px;
+		padding-inline: 22px;
+		font-size: 14px;
+	}
+
 	.footer-cols {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 32px;
-		max-width: 640px;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 32px 24px;
+		max-width: 720px;
 		margin-inline: auto;
 		text-align: center;
 	}
@@ -123,7 +164,7 @@ const SUPPORT_EMAIL = 'soporte@nidu.app';
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		gap: 20px;
+		gap: 12px 20px;
 		padding-block: 28px 32px;
 		border-top: 1px solid rgba(0, 0, 0, 0.06);
 	}
@@ -134,7 +175,12 @@ const SUPPORT_EMAIL = 'soporte@nidu.app';
 		margin: 0;
 	}
 
-	@media (min-width: 720px) {
+	.footer-roadmap {
+		flex-basis: 100%;
+		text-align: center;
+	}
+
+	@media (min-width: 900px) {
 		.footer-top {
 			flex-direction: row;
 			justify-content: space-between;
@@ -144,15 +190,25 @@ const SUPPORT_EMAIL = 'soporte@nidu.app';
 		.footer-brand {
 			align-items: flex-start;
 			text-align: left;
+			max-width: 280px;
+			flex-shrink: 0;
 		}
 
 		.footer-cols {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
 			text-align: left;
 			margin-inline: 0;
+			max-width: none;
+			flex: 1;
 		}
 
 		.footer-bottom {
 			justify-content: space-between;
+		}
+
+		.footer-roadmap {
+			flex-basis: auto;
+			text-align: right;
 		}
 	}
 </style>

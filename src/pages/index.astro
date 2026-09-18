@@ -3,7 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import PassCard from '../components/PassCard.astro';
+import type { PassColor, PassKind } from '../components/PassCard.astro';
 import BackgroundBeams from '../components/BackgroundBeams.astro';
+import ShapeWaves from '../components/ShapeWaves';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
 
@@ -62,40 +64,84 @@ const rubros = [
 	{ nombre: 'Otro', regla: 'Tú defines la regla' },
 ];
 
-const galeriaPases = [
-	{ color: 'purple', business: 'Café Aurora', rule: '8 sellos = café gratis', filled: 6, total: 8 },
+type GalleryPass = {
+	kind: PassKind;
+	color: PassColor;
+	business: string;
+	rule: string;
+	filled?: number;
+	total?: number;
+	highlight?: string;
+	highlightLabel?: string;
+	metaLabel?: string;
+	metaValue?: string;
+};
+
+const galeriaPases: GalleryPass[] = [
 	{
-		color: 'grafito',
-		business: 'Barbería Roble',
-		rule: '6 cortes = 1 corte gratis',
-		filled: 4,
-		total: 6,
-	},
-	{
-		color: 'tomate',
-		business: 'Fonda La Esquina',
-		rule: '10 visitas = plato de la casa',
-		filled: 7,
-		total: 10,
-	},
-	{ color: 'verde', business: 'Studio Vital', rule: '10 visitas = 1 clase gratis', filled: 5, total: 10 },
-	{ color: 'fucsia', business: 'Closet Nora', rule: '8 compras = 20% off', filled: 3, total: 8 },
-	{
-		color: 'turquesa',
-		business: 'NutriMax',
-		rule: '8 compras = producto de regalo',
-		filled: 8,
+		kind: 'loyalty' as const,
+		color: 'purple' as const,
+		business: 'Café Aurora',
+		rule: '8 sellos = café gratis',
+		filled: 6,
 		total: 8,
 	},
-	{ color: 'azul', business: 'Farmacia San Juan', rule: '10 visitas = descuento', filled: 2, total: 10 },
 	{
-		color: 'dorado',
-		business: 'Agencia Norte',
-		rule: '6 reservas = beneficio de cortesía',
-		filled: 5,
-		total: 6,
+		kind: 'coupon' as const,
+		color: 'fucsia' as const,
+		business: 'Closet Nora',
+		rule: '20% en tu próxima compra',
+		highlight: '20%',
+		highlightLabel: 'Descuento',
 	},
-] as const;
+	{
+		kind: 'event' as const,
+		color: 'azul' as const,
+		business: 'Agencia Norte',
+		rule: 'Acceso al evento',
+		metaLabel: 'Fecha',
+		metaValue: 'Sáb 21:00',
+		highlight: 'Sala Norte',
+	},
+	{
+		kind: 'membership' as const,
+		color: 'verde' as const,
+		business: 'Studio Vital',
+		rule: 'Acceso de socio',
+		highlight: 'Socio',
+		highlightLabel: 'Nivel',
+	},
+	{
+		kind: 'gift' as const,
+		color: 'dorado' as const,
+		business: 'NutriMax',
+		rule: 'Saldo de regalo',
+		highlight: '$20',
+		highlightLabel: 'Saldo',
+	},
+	{
+		kind: 'pass' as const,
+		color: 'turquesa' as const,
+		business: 'Fonda La Esquina',
+		rule: 'Entrada para ti y un acompañante',
+		highlight: '2',
+		highlightLabel: 'Personas',
+	},
+	{
+		kind: 'levels' as const,
+		color: 'grafito' as const,
+		business: 'Barbería Roble',
+		rule: 'Bronce, Plata u Oro según tus visitas',
+	},
+	{
+		kind: 'loyalty' as const,
+		color: 'tomate' as const,
+		business: 'Farmacia San Juan',
+		rule: '10 visitas = descuento',
+		filled: 4,
+		total: 10,
+	},
+];
 
 const planes = [
 	{
@@ -121,6 +167,31 @@ const planes = [
 	<main id="top">
 		<!-- A: Hero -->
 		<section class="hero" id="descargar">
+			<div class="hero-waves" aria-hidden="true">
+				<ShapeWaves
+					client:only="react"
+					color="#929292"
+					hoverColor="#ffffff"
+					backgroundColor="#000000"
+					shapes="mixed"
+					cellSize={10}
+					dotSize={0.75}
+					speed={1}
+					scale={1}
+					contrast={1}
+					brightness={0.4}
+					fade={0.25}
+					interactive={true}
+					splashRadius={40}
+					splashStrength={0.4}
+					glow={0.35}
+					intro={true}
+					introDuration={1.6}
+					paused={false}
+				>
+					<div slot="fallback" class="hero-waves-fallback"></div>
+				</ShapeWaves>
+			</div>
 			<div class="container hero-grid">
 				<div class="hero-copy">
 					<p class="eyebrow on-dark">Nidus</p>
@@ -221,10 +292,13 @@ const planes = [
 		</section>
 
 		<!-- Galería de pases -->
-		<section class="galeria">
+		<section class="galeria" id="pases">
 			<div class="container galeria-header" data-reveal>
 				<h2 class="section-title">Un pase para cada negocio.</h2>
-				<p class="galeria-lead">Mismo nido, el color y la regla que tú definas.</p>
+				<p class="galeria-lead">
+					Fidelización, cupón, entrada, membresía, tarjeta de regalo o un pase. También niveles
+					Bronce, Plata y Oro.
+				</p>
 			</div>
 			<div class="galeria-viewport">
 				<div class="galeria-track">
@@ -233,11 +307,16 @@ const planes = [
 							<div class="galeria-item" aria-hidden={i >= galeriaPases.length}>
 								<PassCard
 									size="compact"
+									kind={p.kind}
 									color={p.color}
 									business={p.business}
 									rule={p.rule}
 									filled={p.filled}
 									total={p.total}
+									highlight={p.highlight}
+									highlightLabel={p.highlightLabel}
+									metaLabel={p.metaLabel}
+									metaValue={p.metaValue}
 								/>
 							</div>
 						))
@@ -444,13 +523,41 @@ const planes = [
 
 <style>
 	.hero {
+		position: relative;
 		background: var(--near-black);
 		color: var(--paper);
 		padding-block: 120px 96px;
 		overflow: hidden;
 	}
 
+	.hero-waves {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.hero-waves :global(astro-island) {
+		display: block !important;
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.hero-waves-fallback {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		background: var(--near-black);
+	}
+
 	.hero-grid {
+		position: relative;
+		z-index: 1;
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 56px;
@@ -743,6 +850,7 @@ const planes = [
 		font-size: 16px;
 		margin: 0 auto;
 		text-align: center;
+		max-width: 46ch;
 	}
 
 	.galeria-viewport {

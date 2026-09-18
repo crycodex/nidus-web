@@ -9,16 +9,40 @@ export type PassColor =
 	| 'dorado'
 	| 'turquesa';
 
+export type PassKind = 'loyalty' | 'coupon' | 'event' | 'membership' | 'gift' | 'pass' | 'levels';
+
 interface Props {
 	size?: 'hero' | 'default' | 'compact';
 	class?: string;
 	color?: PassColor;
+	kind?: PassKind;
 	business?: string;
 	rule?: string;
 	filled?: number;
 	total?: number;
 	interactive?: boolean;
+	highlight?: string;
+	highlightLabel?: string;
+	metaLabel?: string;
+	metaValue?: string;
 }
+
+const KIND_EYEBROW: Record<PassKind, string> = {
+	loyalty: 'Fidelización',
+	coupon: 'Cupón',
+	event: 'Entrada',
+	membership: 'Membresía',
+	gift: 'Tarjeta de regalo',
+	pass: 'Pase',
+	levels: 'Niveles',
+};
+
+const DEFAULT_HIGHLIGHT: Partial<Record<PassKind, { value: string; label: string }>> = {
+	coupon: { value: '20%', label: 'Descuento' },
+	gift: { value: '$20', label: 'Saldo' },
+	membership: { value: 'Socio', label: 'Nivel' },
+	pass: { value: '2', label: 'Personas' },
+};
 
 const COLORS: Record<PassColor, { from: string; to: string; check: string; shadow: string }> = {
 	purple: { from: '#7C3AED', to: '#4C1D95', check: '#7C3AED', shadow: 'rgba(76, 29, 149, 0.45)' },
@@ -35,12 +59,22 @@ const {
 	size = 'default',
 	class: className = '',
 	color = 'purple',
+	kind = 'loyalty',
 	business = 'Café Aurora',
 	rule = '8 sellos = café gratis',
 	filled = 7,
 	total = 8,
 	interactive = false,
+	highlight,
+	highlightLabel,
+	metaLabel,
+	metaValue,
 } = Astro.props;
+
+const eyebrow = KIND_EYEBROW[kind];
+const accent = DEFAULT_HIGHLIGHT[kind];
+const bigValue = highlight ?? accent?.value;
+const bigLabel = highlightLabel ?? accent?.label;
 
 const stamps = Array.from({ length: total });
 const palette = COLORS[color];
@@ -56,7 +90,7 @@ const palette = COLORS[color];
 	}}
 >
 	<div class="pass-top">
-		<span class="pass-eyebrow">Tarjeta de sellos</span>
+		<span class="pass-eyebrow">{eyebrow}</span>
 		{
 			interactive ? (
 				<span
@@ -75,38 +109,74 @@ const palette = COLORS[color];
 		}
 	</div>
 
-	<div
-		class:list={['pass-stamps', { clickable: interactive }]}
-		role={interactive ? 'group' : 'img'}
-		aria-label={`${filled} de ${total} sellos completados`}
-	>
-		{
-			stamps.map((_, i) => {
-				const StampTag = interactive ? 'button' : 'span';
-				return (
-					<StampTag
-						type={interactive ? 'button' : undefined}
-						class:list={['stamp', { filled: i < filled }]}
-						data-index={interactive ? i : undefined}
-						aria-label={interactive ? `Sello ${i + 1}` : undefined}
-					>
-						{i < filled && (
-							<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-								<path
-									d="M4 12.5L9.5 18L20 6"
-									fill="none"
-									stroke={palette.check}
-									stroke-width="2.6"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
-						)}
-					</StampTag>
-				);
-			})
-		}
-	</div>
+	{
+		kind === 'loyalty' && (
+			<div
+				class:list={['pass-stamps', { clickable: interactive }]}
+				role={interactive ? 'group' : 'img'}
+				aria-label={`${filled} de ${total} sellos completados`}
+			>
+				{stamps.map((_, i) => {
+					const StampTag = interactive ? 'button' : 'span';
+					return (
+						<StampTag
+							type={interactive ? 'button' : undefined}
+							class:list={['stamp', { filled: i < filled }]}
+							data-index={interactive ? i : undefined}
+							aria-label={interactive ? `Sello ${i + 1}` : undefined}
+						>
+							{i < filled && (
+								<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+									<path
+										d="M4 12.5L9.5 18L20 6"
+										fill="none"
+										stroke={palette.check}
+										stroke-width="2.6"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							)}
+						</StampTag>
+					);
+				})}
+			</div>
+		)
+	}
+
+	{
+		(kind === 'coupon' || kind === 'gift' || kind === 'membership' || kind === 'pass') && (
+			<div class="pass-highlight">
+				<span class="pass-highlight-value">{bigValue}</span>
+				<span class="pass-highlight-label">{bigLabel}</span>
+			</div>
+		)
+	}
+
+	{
+		kind === 'event' && (
+			<div class="pass-meta">
+				<div class="pass-meta-item">
+					<span class="reward-label">{metaLabel ?? 'Fecha'}</span>
+					<span class="pass-meta-value">{metaValue ?? 'Sáb 21:00'}</span>
+				</div>
+				<div class="pass-meta-item">
+					<span class="reward-label">Lugar</span>
+					<span class="pass-meta-value">{highlight ?? 'Sala Norte'}</span>
+				</div>
+			</div>
+		)
+	}
+
+	{
+		kind === 'levels' && (
+			<div class="pass-tiers" aria-label="Bronce, Plata y Oro">
+				<span class="pass-tier">Bronce</span>
+				<span class="pass-tier">Plata</span>
+				<span class="pass-tier is-current">Oro</span>
+			</div>
+		)
+	}
 
 	<div class="pass-reward">
 		<span class="reward-label">Recompensa</span>
@@ -361,6 +431,83 @@ const palette = COLORS[color];
 		opacity: 0.88;
 		border-top: 1px solid rgba(255, 255, 255, 0.18);
 		padding-top: 12px;
+	}
+
+	.pass-highlight {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.pass-highlight-value {
+		font-size: 34px;
+		font-weight: 800;
+		letter-spacing: -0.04em;
+		line-height: 0.95;
+	}
+
+	.pass-card.compact .pass-highlight-value {
+		font-size: 28px;
+	}
+
+	.pass-highlight-label {
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		opacity: 0.72;
+	}
+
+	.pass-meta {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 12px;
+	}
+
+	.pass-meta-item {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	.pass-meta-item:last-child {
+		text-align: right;
+		align-items: flex-end;
+	}
+
+	.pass-meta-value {
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.pass-card.compact .pass-meta-value {
+		font-size: 13px;
+	}
+
+	.pass-tiers {
+		display: flex;
+		gap: 6px;
+	}
+
+	.pass-tier {
+		flex: 1;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 999px;
+		font-size: 11px;
+		font-weight: 700;
+		background: rgba(255, 255, 255, 0.12);
+		border: 1px solid rgba(255, 255, 255, 0.22);
+	}
+
+	.pass-tier.is-current {
+		background: var(--paper);
+		color: var(--from);
+		border-color: var(--paper);
 	}
 
 	@media (max-width: 480px) {

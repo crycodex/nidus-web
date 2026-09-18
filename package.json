@@ -12,10 +12,18 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^6.0.6",
     "astro": "^7.3.3",
-    "gsap": "^3.15.0"
+    "gsap": "^3.15.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "vgpu": "^0.5.0"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0"
   }
 }
