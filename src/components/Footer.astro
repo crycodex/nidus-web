@@ -1,0 +1,73 @@
+---
+import NidoMark from './NidoMark.astro';
+
+const SUPPORT_EMAIL = 'soporte@nidu.app';
+---
+
+<footer class="site-footer">
+	<div class="container footer-inner">
+		<div class="footer-brand">
+			<NidoMark variant="dark" size={22} />
+			<span class="footer-domain">nidu.app</span>
+		</div>
+
+		<nav class="footer-links" aria-label="Legal">
+			<a href="/privacidad">Privacidad</a>
+			<a href="/terminos">Términos</a>
+			<a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+		</nav>
+
+		<p class="footer-copy">© 2026 Nidu</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--paper);
+		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		padding-block: 40px;
+	}
+
+	.footer-inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+	}
+
+	.footer-brand {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.footer-domain {
+		color: var(--muted);
+		font-size: 14px;
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 24px;
+		flex-wrap: wrap;
+	}
+
+	.footer-links a {
+		color: var(--muted);
+		text-decoration: none;
+		font-size: 14px;
+		font-weight: 500;
+		transition: color var(--t-fast) var(--ease-out-cubic);
+	}
+
+	.footer-links a:hover {
+		color: var(--ink);
+	}
+
+	.footer-copy {
+		color: var(--faint);
+		font-size: 13px;
+		margin: 0;
+	}
+</style>

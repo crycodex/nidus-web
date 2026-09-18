@@ -1,11 +1,616 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import NidoMark from '../components/NidoMark.astro';
+import PassCard from '../components/PassCard.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const APP_STORE_URL = 'https://apps.apple.com/app/nidus'; // TODO: reemplazar cuando esté publicada
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.nidu'; // TODO: reemplazar cuando esté publicada
+
+const comoFunciona = [
+	{
+		n: '1',
+		title: 'Publica tu tarjeta',
+		body: 'Eliges el rubro. Nidus arma sellos y recompensa. Imprimes el QR.',
+	},
+	{
+		n: '2',
+		title: 'El cliente se une en 20 segundos',
+		body: 'Escanea, pone su nombre, guarda el pase. Cero apps.',
+	},
+	{
+		n: '3',
+		title: 'Tú sellas en el mostrador',
+		body: 'Abres Sellar, apuntas al pase, listo. Cuando completa, canjeas. El wallet se actualiza solo.',
+	},
+];
+
+const paraNegocio = [
+	{ title: 'Sellar', body: 'Cámara al QR del pase.' },
+	{
+		title: 'Tarjetas a tu medida',
+		body: 'Sellos, puntos, visitas o consumo. Cupón, entrada, membresía, regalo.',
+	},
+	{
+		title: 'Clientes y niveles',
+		body: 'Quién es nuevo, quién está en riesgo, quién cumple años, quién es top.',
+	},
+	{
+		title: 'Campañas en el pase',
+		body: 'El mensaje llega al wallet, no a un correo que nadie abre.',
+	},
+	{ title: 'Equipo y sucursales', body: 'El mostrador sella. El dueño ve el ranking.' },
+	{
+		title: 'Métricas',
+		body: 'Sellos, canjes, nuevos vs recurrentes, embudo de inscripción → primer sello → canje.',
+	},
+];
+
+const rubros = [
+	{ nombre: 'Café', regla: '8 sellos = café gratis' },
+	{ nombre: 'Barbería', regla: '6 cortes = 1 corte gratis' },
+	{ nombre: 'Restaurante', regla: '10 visitas = plato de la casa' },
+	{ nombre: 'Gimnasio', regla: '10 visitas = 1 clase gratis' },
+	{ nombre: 'Tienda de ropa', regla: '8 compras = 20% off' },
+	{ nombre: 'Suplementos', regla: '8 compras = producto de regalo' },
+	{ nombre: 'Farmacia', regla: '10 visitas = descuento' },
+	{ nombre: 'Agencia', regla: '6 reservas = beneficio de cortesía' },
+	{ nombre: 'Otro', regla: 'Tú defines la regla' },
+];
 ---
 
 <Layout>
-	<Welcome />
+	<Nav />
+
+	<main id="top">
+		<!-- A: Hero -->
+		<section class="hero" id="descargar">
+			<div class="container hero-grid">
+				<div class="hero-copy">
+					<p class="eyebrow on-dark">Nidus</p>
+					<h1>Fideliza a tus clientes sin fricción</h1>
+					<p class="hero-lead">
+						Tus clientes no tienen que descargar nada. La tarjeta vive en Apple Wallet y Google
+						Wallet. Tú solo escaneas.
+					</p>
+
+					<div class="hero-ctas">
+						<a href={APP_STORE_URL} class="btn btn-primary on-dark">Descargar la app</a>
+						<a href="#como" class="btn btn-outline on-dark">Ver cómo funciona</a>
+					</div>
+
+					<p class="hero-micro">Disponible para iOS y Android. El cliente no instala Nidus.</p>
+				</div>
+
+				<div class="hero-visual" aria-hidden="true">
+					<PassCard size="hero" />
+				</div>
+			</div>
+		</section>
+
+		<!-- B: Tensión -->
+		<section class="tension" data-reveal>
+			<div class="container tension-lines">
+				<p class="tension-line">Hola. Bienvenido.</p>
+				<p class="tension-line">¿Te has dado cuenta? Tus clientes no vuelven.</p>
+				<p class="tension-line">
+					Un 5% más de retención puede subir tus ganancias hasta un 95%.
+					<span class="tension-source">Bain &amp; Company, Harvard Business Review</span>
+				</p>
+			</div>
+		</section>
+
+		<!-- C: Cómo funciona -->
+		<section class="como" id="como">
+			<div class="container">
+				<h2 class="section-title">Cómo funciona</h2>
+				<div class="steps">
+					{
+						comoFunciona.map((step) => (
+							<div class="step" data-reveal>
+								<span class="step-n">{step.n}</span>
+								<h3>{step.title}</h3>
+								<p>{step.body}</p>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<!-- D: El nido del cliente -->
+		<section class="nido-cliente" id="producto">
+			<div class="container nido-cliente-grid">
+				<div class="nido-cliente-copy" data-reveal>
+					<h2>El nido está en su wallet, no en otra app.</h2>
+					<p>
+						Cada sello, cada promoción y cada felicitación de cumpleaños aparecen en Apple Wallet
+						o Google Wallet. El cliente ya abre esa app. Nidus no le pide otra.
+					</p>
+					<ul class="check-list">
+						<li>Únete gratis, sin descargar nada</li>
+						<li>Cero contraseñas, cero cuentas</li>
+						<li>El pase se actualiza después de cada sello</li>
+					</ul>
+				</div>
+				<div class="nido-cliente-visual" data-reveal>
+					<PassCard />
+				</div>
+			</div>
+		</section>
+
+		<!-- E: Para el negocio -->
+		<section class="para-negocio" id="para-quien">
+			<div class="container">
+				<h2 class="section-title">Para el negocio</h2>
+				<div class="feature-grid">
+					{
+						paraNegocio.map((f) => (
+							<div class="feature-card" data-reveal>
+								<h3>{f.title}</h3>
+								<p>{f.body}</p>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<!-- F: Rubros -->
+		<section class="rubros">
+			<div class="container">
+				<h2 class="section-title">Hecho para el local, no para la cadena.</h2>
+				<div class="rubro-chips">
+					{
+						rubros.map((r) => (
+							<div class="rubro-chip" data-reveal>
+								<span class="rubro-nombre">{r.nombre}</span>
+								<span class="rubro-regla">{r.regla}</span>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<!-- G: IA -->
+		<section class="ia" id="ia">
+			<div class="container ia-grid">
+				<div class="ia-copy" data-reveal>
+					<h2>Sugerencias, no piloto automático.</h2>
+					<p>
+						Cuando hay historial de verdad, Nidus lee tus clientes y te arma <strong>borradores</strong>
+						de campaña (quién, qué decir, por qué). Tú revisas. Si te sirve, se prellena el envío.
+						<strong> Nidus no manda nada sola.</strong>
+					</p>
+				</div>
+
+				<div class="ia-examples" data-reveal>
+					<p class="ia-examples-label">Ejemplo ilustrativo</p>
+					<div class="ia-card">
+						<span class="ia-segment">Segmento: En riesgo</span>
+						<p>
+							«Hace 3 semanas que no te vemos. Este café te espera — el próximo sello va por
+							nuestra cuenta.»
+						</p>
+					</div>
+					<div class="ia-card">
+						<span class="ia-segment">Segmento: Cumpleaños</span>
+						<p>«Feliz cumpleaños. Hoy tu recompensa está a un sello.»</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- H: Carta del fundador -->
+		<section class="carta">
+			<div class="container">
+				<div class="carta-card" data-reveal>
+					<p>Hola.</p>
+					<p>
+						Vi que los emprendedores consiguen clientes… y los pierden. No hay un nido que los
+						haga volver. Por eso creé Nidus.
+					</p>
+					<p class="carta-firma">— Cristhian Recalde, fundador</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- I: CTA final -->
+		<section class="cta-final">
+			<div class="container cta-final-inner" data-reveal>
+				<h2>Pon el nido en el mostrador esta semana.</h2>
+				<a href={APP_STORE_URL} class="btn btn-primary on-dark cta-final-btn">Descargar Nidus</a>
+				<p class="cta-final-note">El cliente sigue sin instalar nada.</p>
+			</div>
+		</section>
+	</main>
+
+	<Footer />
 </Layout>
+
+<style>
+	.hero {
+		background: var(--ink);
+		color: var(--paper);
+		padding-block: 96px 80px;
+		overflow: hidden;
+	}
+
+	.hero-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 56px;
+		align-items: center;
+	}
+
+	.hero-copy h1 {
+		font-size: clamp(2.5rem, 6vw, 4.25rem);
+		color: var(--paper);
+		margin-top: 14px;
+		max-width: 14ch;
+	}
+
+	.hero-lead {
+		margin-top: 24px;
+		font-size: 19px;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.78);
+		max-width: 46ch;
+	}
+
+	.hero-ctas {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		margin-top: 36px;
+	}
+
+	.hero-micro {
+		margin-top: 18px;
+		font-size: 13px;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.hero-visual {
+		display: flex;
+		justify-content: center;
+	}
+
+	.tension {
+		background: var(--ink);
+		padding-block: 72px;
+	}
+
+	.tension-lines {
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
+		max-width: 760px;
+	}
+
+	.tension-line {
+		font-family: var(--font-display);
+		font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+		line-height: 1.35;
+		color: var(--paper);
+		margin: 0;
+	}
+
+	.tension-source {
+		display: block;
+		font-family: var(--font-ui);
+		font-size: 13px;
+		color: var(--faint);
+		margin-top: 10px;
+		font-weight: 500;
+	}
+
+	.section-title {
+		font-size: clamp(1.75rem, 3.6vw, 2.5rem);
+		margin-bottom: 48px;
+		max-width: 18ch;
+	}
+
+	.como {
+		background: var(--canvas);
+		padding-block: 96px;
+	}
+
+	.steps {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	.step-n {
+		font-family: var(--font-display);
+		font-size: 3rem;
+		font-weight: 600;
+		color: var(--purple);
+		display: block;
+		line-height: 1;
+	}
+
+	.step h3 {
+		font-family: var(--font-ui);
+		font-size: 20px;
+		font-weight: 800;
+		margin-top: 16px;
+	}
+
+	.step p {
+		margin-top: 10px;
+		color: var(--muted);
+		font-size: 16px;
+		line-height: 1.6;
+		max-width: 42ch;
+	}
+
+	.nido-cliente {
+		background: var(--paper);
+		padding-block: 96px;
+	}
+
+	.nido-cliente-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 48px;
+		align-items: center;
+	}
+
+	.nido-cliente-copy h2 {
+		font-size: clamp(1.9rem, 4vw, 2.6rem);
+		max-width: 16ch;
+	}
+
+	.nido-cliente-copy p {
+		margin-top: 20px;
+		font-size: 17px;
+		line-height: 1.6;
+		color: var(--muted);
+		max-width: 48ch;
+	}
+
+	.check-list {
+		list-style: none;
+		padding: 0;
+		margin: 28px 0 0;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.check-list li {
+		position: relative;
+		padding-left: 28px;
+		font-size: 15px;
+		font-weight: 600;
+		color: var(--ink);
+	}
+
+	.check-list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 4px;
+		width: 16px;
+		height: 16px;
+		border-radius: 999px;
+		background: var(--purple-tint);
+		box-shadow: inset 0 0 0 1.5px var(--purple);
+	}
+
+	.nido-cliente-visual {
+		display: flex;
+		justify-content: center;
+	}
+
+	.para-negocio {
+		background: var(--ink);
+		padding-block: 96px;
+	}
+
+	.para-negocio .section-title {
+		color: var(--paper);
+	}
+
+	.feature-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.feature-card {
+		background: var(--paper);
+		border-radius: var(--r-card);
+		padding: 28px;
+		box-shadow: var(--shadow-soft);
+	}
+
+	.feature-card h3 {
+		font-family: var(--font-ui);
+		font-size: 18px;
+		font-weight: 800;
+	}
+
+	.feature-card p {
+		margin-top: 10px;
+		font-size: 14.5px;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+
+	.rubros {
+		background: var(--canvas);
+		padding-block: 96px;
+	}
+
+	.rubro-chips {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 12px;
+	}
+
+	.rubro-chip {
+		background: var(--paper);
+		border-radius: var(--r-card);
+		padding: 18px 20px;
+		box-shadow: var(--shadow-soft);
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.rubro-nombre {
+		font-weight: 800;
+		font-size: 14px;
+	}
+
+	.rubro-regla {
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	.ia {
+		background: var(--paper);
+		padding-block: 96px;
+	}
+
+	.ia-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	.ia-copy h2 {
+		font-size: clamp(1.9rem, 4vw, 2.6rem);
+		max-width: 16ch;
+	}
+
+	.ia-copy p {
+		margin-top: 20px;
+		font-size: 17px;
+		line-height: 1.6;
+		color: var(--muted);
+		max-width: 48ch;
+	}
+
+	.ia-examples-label {
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--faint);
+		margin: 0 0 16px;
+	}
+
+	.ia-card {
+		background: var(--canvas);
+		border-radius: var(--r-panel);
+		padding: 22px 24px;
+		margin-bottom: 14px;
+	}
+
+	.ia-segment {
+		display: block;
+		font-size: 12px;
+		font-weight: 700;
+		color: var(--purple-brand);
+		margin-bottom: 8px;
+	}
+
+	.ia-card p {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: 17px;
+		line-height: 1.45;
+		color: var(--ink);
+	}
+
+	.carta {
+		background: var(--paper);
+		padding-block: 64px 96px;
+	}
+
+	.carta-card {
+		max-width: 620px;
+		margin-inline: auto;
+		background: var(--paper-warm);
+		border-left: 3px solid var(--purple);
+		border-radius: var(--r-panel);
+		padding: 36px 40px;
+	}
+
+	.carta-card p {
+		font-family: var(--font-display);
+		font-size: 19px;
+		line-height: 1.6;
+		margin: 0 0 14px;
+		color: var(--ink);
+	}
+
+	.carta-card p:last-child {
+		margin-bottom: 0;
+	}
+
+	.carta-firma {
+		font-size: 15px;
+		color: var(--muted);
+		font-style: italic;
+	}
+
+	.cta-final {
+		background: linear-gradient(135deg, var(--purple) 0%, var(--purple-deep) 100%);
+		padding-block: 96px;
+	}
+
+	.cta-final-inner {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 28px;
+	}
+
+	.cta-final h2 {
+		color: var(--paper);
+		font-size: clamp(2rem, 4.5vw, 3rem);
+		max-width: 18ch;
+	}
+
+	.cta-final-btn {
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.cta-final-note {
+		color: rgba(255, 255, 255, 0.8);
+		font-size: 14px;
+		margin: 0;
+	}
+
+	@media (min-width: 900px) {
+		.hero-grid {
+			grid-template-columns: 1.1fr 0.9fr;
+		}
+
+		.steps {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.nido-cliente-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.feature-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.ia-grid {
+			grid-template-columns: 1fr 1fr;
+			align-items: center;
+		}
+	}
+</style>

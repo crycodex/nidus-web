@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Términos — Nidus" description="Términos de uso de Nidu.">
+	<Nav />
+
+	<main class="legal">
+		<div class="container legal-inner">
+			<h1>Términos</h1>
+			<p class="legal-updated">Última actualización: 2026.</p>
+
+			<p>
+				Al usar Nidu, ya sea como negocio o como cliente que se inscribe en un programa de
+				fidelización, aceptas estos términos.
+			</p>
+
+			<p>
+				Nidu ofrece una plataforma para que negocios locales emitan tarjetas de fidelización
+				digitales. Los sellos, recompensas y condiciones de cada tarjeta son definidos y
+				administrados por el negocio emisor — Nidu no es responsable por el cumplimiento de las
+				recompensas ofrecidas.
+			</p>
+
+			<p>
+				El uso del servicio debe hacerse de forma lícita y de buena fe. Nos reservamos el derecho
+				de suspender cuentas que hagan un uso indebido de la plataforma.
+			</p>
+
+			<p class="legal-note">
+				Este documento es una plantilla general y debe ser revisada por un profesional legal
+				antes de su uso definitivo en producción.
+			</p>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
+
+<style>
+	.legal {
+		background: var(--paper);
+		padding-block: 80px 96px;
+	}
+
+	.legal-inner {
+		max-width: 68ch;
+	}
+
+	.legal-inner h1 {
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.legal-updated {
+		color: var(--faint);
+		font-size: 14px;
+		margin-top: 12px;
+	}
+
+	.legal-inner p {
+		font-size: 16px;
+		line-height: 1.7;
+		color: var(--ink);
+		margin-top: 24px;
+	}
+
+	.legal-note {
+		color: var(--muted);
+		font-size: 14px;
+		font-style: italic;
+	}
+</style>

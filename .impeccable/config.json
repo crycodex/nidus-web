@@ -1,0 +1,29 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "createdAt": "2026-09-18T00:14:31.336Z",
+        "reason": "PRD idea.md sec.4 Motion: 'Un overshoot suave (ease-out-back) solo al entrar cards' — curva pedida explícitamente por el brief, no un default"
+      },
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-09-18T00:14:31.387Z",
+        "reason": "PRD idea.md sec.4 Tipo: 'Display/H1: serif editorial con caracter (Fraunces, Newsreader o Source Serif 4)' — fuente nombrada explicitamente por el brief"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/pages/index.astro"
+        ],
+        "createdAt": "2026-09-18T00:14:31.449Z",
+        "reason": "PRD idea.md sec.5 Seccion H: carta del fundador con 'una raya morada de 3px a la izquierda' explicitamente solo en esa card ('#FFFCF7 esta permitido solo aqui')"
+      }
+    ]
+  }
+}

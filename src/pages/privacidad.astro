@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Privacidad — Nidus" description="Política de privacidad de Nidu.">
+	<Nav />
+
+	<main class="legal">
+		<div class="container legal-inner">
+			<h1>Privacidad</h1>
+			<p class="legal-updated">Última actualización: 2026.</p>
+
+			<p>
+				En Nidu recopilamos únicamente los datos necesarios para operar tu programa de
+				fidelización: nombre, teléfono, correo y, si lo compartes, fecha de nacimiento. Estos
+				datos se usan para emitir tu tarjeta digital en Apple Wallet o Google Wallet, registrar
+				tus sellos y canjes, y comunicarte novedades del negocio si aceptaste recibirlas.
+			</p>
+
+			<p>
+				No vendemos tus datos a terceros. Tu información se comparte únicamente con Apple o
+				Google, en la medida necesaria para mostrar tu tarjeta en su respectiva billetera
+				digital.
+			</p>
+
+			<p>
+				Puedes solicitar en cualquier momento la eliminación de tus datos o de tu cuenta
+				escribiendo al negocio donde te inscribiste, o directamente a
+				<a href="mailto:soporte@nidu.app">soporte@nidu.app</a>.
+			</p>
+
+			<p class="legal-note">
+				Este documento es una plantilla general y debe ser revisada por un profesional legal
+				antes de su uso definitivo en producción.
+			</p>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
+
+<style>
+	.legal {
+		background: var(--paper);
+		padding-block: 80px 96px;
+	}
+
+	.legal-inner {
+		max-width: 68ch;
+	}
+
+	.legal-inner h1 {
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.legal-updated {
+		color: var(--faint);
+		font-size: 14px;
+		margin-top: 12px;
+	}
+
+	.legal-inner p {
+		font-size: 16px;
+		line-height: 1.7;
+		color: var(--ink);
+		margin-top: 24px;
+	}
+
+	.legal-note {
+		color: var(--muted);
+		font-size: 14px;
+		font-style: italic;
+	}
+
+	.legal-inner a {
+		color: var(--purple-brand);
+	}
+</style>
