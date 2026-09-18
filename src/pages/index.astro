@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import PassCard from '../components/PassCard.astro';
 import type { PassColor, PassKind } from '../components/PassCard.astro';
 import BackgroundBeams from '../components/BackgroundBeams.astro';
-import ShapeWaves from '../components/ShapeWaves';
+import HeroShapeWaves from '../components/HeroShapeWaves.astro';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
 
@@ -167,31 +167,7 @@ const planes = [
 	<main id="top">
 		<!-- A: Hero -->
 		<section class="hero" id="descargar">
-			<div class="hero-waves" aria-hidden="true">
-				<ShapeWaves
-					client:only="react"
-					color="#929292"
-					hoverColor="#ffffff"
-					backgroundColor="#000000"
-					shapes="mixed"
-					cellSize={10}
-					dotSize={0.75}
-					speed={1}
-					scale={1}
-					contrast={1}
-					brightness={0.4}
-					fade={0.25}
-					interactive={true}
-					splashRadius={40}
-					splashStrength={0.4}
-					glow={0.35}
-					intro={true}
-					introDuration={1.6}
-					paused={false}
-				>
-					<div slot="fallback" class="hero-waves-fallback"></div>
-				</ShapeWaves>
-			</div>
+			<HeroShapeWaves />
 			<div class="container hero-grid">
 				<div class="hero-copy">
 					<p class="eyebrow on-dark">Nidus</p>
@@ -528,31 +504,6 @@ const planes = [
 		color: var(--paper);
 		padding-block: 120px 96px;
 		overflow: hidden;
-	}
-
-	.hero-waves {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-	}
-
-	.hero-waves :global(astro-island) {
-		display: block !important;
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-	}
-
-	.hero-waves-fallback {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		background: var(--near-black);
 	}
 
 	.hero-grid {

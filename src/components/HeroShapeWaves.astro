@@ -1,0 +1,240 @@
+---
+interface Props {
+	color?: string;
+	backgroundColor?: string;
+	cellSize?: number;
+	dotSize?: number;
+	speed?: number;
+	fade?: number;
+}
+
+const {
+	color = '#929292',
+	backgroundColor = '#000000',
+	cellSize = 12,
+	dotSize = 0.75,
+	speed = 1,
+	fade = 0.25,
+} = Astro.props;
+---
+
+<div
+	class="hero-waves"
+	aria-hidden="true"
+	data-color={color}
+	data-bg={backgroundColor}
+	data-cell={cellSize}
+	data-dot={dotSize}
+	data-speed={speed}
+	data-fade={fade}
+>
+	<canvas class="hero-waves-canvas"></canvas>
+</div>
+
+<script>
+	const parseHex = (value: string, fallback: string): [number, number, number] => {
+		const source = /^#?([\da-f]{3}|[\da-f]{6})$/i.exec(value.trim())?.[1] ?? fallback.slice(1);
+		const hex = source.length === 3 ? source.replace(/./g, (c) => c + c) : source;
+		return [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16)) as [number, number, number];
+	};
+
+	const hash3 = (x: number, y: number, z: number) => {
+		const s = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453;
+		return s - Math.floor(s);
+	};
+
+	const fade3 = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
+
+	const noise3 = (x: number, y: number, z: number) => {
+		const ix = Math.floor(x);
+		const iy = Math.floor(y);
+		const iz = Math.floor(z);
+		const fx = x - ix;
+		const fy = y - iy;
+		const fz = z - iz;
+		const ux = fade3(fx);
+		const uy = fade3(fy);
+		const uz = fade3(fz);
+		const n = (dx: number, dy: number, dz: number) => hash3(ix + dx, iy + dy, iz + dz);
+		const x00 = n(0, 0, 0) * (1 - ux) + n(1, 0, 0) * ux;
+		const x10 = n(0, 1, 0) * (1 - ux) + n(1, 1, 0) * ux;
+		const x01 = n(0, 0, 1) * (1 - ux) + n(1, 0, 1) * ux;
+		const x11 = n(0, 1, 1) * (1 - ux) + n(1, 1, 1) * ux;
+		const y0 = x00 * (1 - uy) + x10 * uy;
+		const y1 = x01 * (1 - uy) + x11 * uy;
+		return y0 * (1 - uz) + y1 * uz;
+	};
+
+	const start = (root: HTMLElement) => {
+		if (root.dataset.wired === '1') return;
+		const canvas = root.querySelector('canvas');
+		if (!canvas) return;
+		const ctx = canvas.getContext('2d', { alpha: false });
+		if (!ctx) return;
+		root.dataset.wired = '1';
+
+		const color = parseHex(root.dataset.color ?? '#929292', '#929292');
+		const hover = [255, 255, 255] as const;
+		const bg = parseHex(root.dataset.bg ?? '#000000', '#000000');
+		const cell = Math.max(8, Number(root.dataset.cell ?? 12));
+		const dotSize = Math.min(1, Math.max(0.2, Number(root.dataset.dot ?? 0.75)));
+		const speed = Number(root.dataset.speed ?? 1);
+		const fade = Number(root.dataset.fade ?? 0.25);
+		const TIME_RATE = 0.1;
+		const SCALE = 2.4;
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		let dpr = 1;
+		let cols = 1;
+		let rows = 1;
+		let time = 0;
+		let last = 0;
+		let frameId = 0;
+		let visible = true;
+		const pointer = { x: -9999, y: -9999, charge: 0 };
+
+		const resize = () => {
+			dpr = Math.min(window.devicePixelRatio || 1, 2);
+			const cssW = root.clientWidth || root.getBoundingClientRect().width;
+			const cssH = root.clientHeight || root.getBoundingClientRect().height;
+			const width = Math.max(1, Math.round(cssW * dpr));
+			const height = Math.max(1, Math.round(cssH * dpr));
+			if (canvas.width !== width) canvas.width = width;
+			if (canvas.height !== height) canvas.height = height;
+			cols = Math.max(1, Math.round(width / (cell * dpr)));
+			rows = Math.max(1, Math.floor(height / (width / cols)));
+		};
+
+		const drawShape = (cx: number, cy: number, size: number, band: number) => {
+			if (band === 1) {
+				ctx.beginPath();
+				ctx.arc(cx, cy, size * 0.5, 0, Math.PI * 2);
+				ctx.fill();
+				return;
+			}
+			if (band === 0) {
+				ctx.beginPath();
+				ctx.moveTo(cx, cy - size * 0.58);
+				ctx.lineTo(cx + size * 0.52, cy + size * 0.46);
+				ctx.lineTo(cx - size * 0.52, cy + size * 0.46);
+				ctx.closePath();
+				ctx.fill();
+				return;
+			}
+			const half = size * 0.46;
+			ctx.fillRect(cx - half, cy - half, half * 2, half * 2);
+		};
+
+		const render = (now: number) => {
+			frameId = 0;
+			if (!visible) return;
+			const delta = last ? Math.min(0.05, (now - last) / 1000) : 0;
+			last = now;
+			if (!reduceMotion) time += delta * TIME_RATE * 0.35 * speed;
+			pointer.charge *= 0.94;
+
+			const width = canvas.width;
+			const height = canvas.height;
+			const cellPx = width / cols;
+			const originY = (height - rows * cellPx) / 2;
+			const glyph = cellPx * dotSize;
+			const field = 32 * SCALE;
+
+			ctx.fillStyle = `rgb(${bg[0]}, ${bg[1]}, ${bg[2]})`;
+			ctx.fillRect(0, 0, width, height);
+
+			for (let row = 0; row < rows; row++) {
+				for (let col = 0; col < cols; col++) {
+					const cx = (col + 0.5) * cellPx;
+					const cy = originY + (row + 0.5) * cellPx;
+					const u = cx / width;
+					const v = cy / height;
+					const qx = Math.abs(u * 2 - 1);
+					const qy = Math.abs(v * 2 - 1);
+					const radius = Math.pow(Math.pow(qx, 2.5) + Math.pow(qy, 2.5), 0.4) / 1.32;
+					const edge = fade > 0 ? 1 - Math.min(1, Math.max(0, (radius - (1 - fade * 2.2)) / Math.max(0.001, fade * 2.2))) : 1;
+					if (edge <= 0.05) continue;
+
+					const dx = cx - pointer.x;
+					const dy = cy - pointer.y;
+					const splash = pointer.charge * Math.exp(-(dx * dx + dy * dy) / (2 * (56 * dpr) * (56 * dpr)));
+					const tone = Math.min(0.999, Math.max(0, (noise3(col / field, row / field, time) - 0.5) * 0.9 + 0.42));
+					const band = Math.floor(tone * 3);
+					const size = glyph * (0.55 + band * 0.22) * edge;
+					const lit = Math.min(1, splash);
+					const r = color[0] + (hover[0] - color[0]) * lit;
+					const g = color[1] + (hover[1] - color[1]) * lit;
+					const b = color[2] + (hover[2] - color[2]) * lit;
+					ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.38 + band * 0.18 + lit * 0.28})`;
+					drawShape(cx, cy, size, band);
+				}
+			}
+
+			if (visible && !document.hidden) frameId = requestAnimationFrame(render);
+			else last = 0;
+		};
+
+		const wake = () => {
+			if (frameId || !visible) return;
+			frameId = requestAnimationFrame(render);
+		};
+
+		const onPointer = (event: PointerEvent) => {
+			const rect = root.getBoundingClientRect();
+			pointer.x = (event.clientX - rect.left) * dpr;
+			pointer.y = (event.clientY - rect.top) * dpr;
+			if (pointer.x >= 0 && pointer.y >= 0 && pointer.x <= canvas.width && pointer.y <= canvas.height) {
+				pointer.charge = Math.min(0.55, pointer.charge + 0.08);
+				wake();
+			}
+		};
+
+		resize();
+		wake();
+
+		const resizeObserver = new ResizeObserver(() => {
+			resize();
+			wake();
+		});
+		resizeObserver.observe(root);
+
+		const visibilityObserver = new IntersectionObserver(
+			(entries) => {
+				visible = entries.some((entry) => entry.isIntersecting);
+				if (visible) wake();
+			},
+			{ threshold: 0 }
+		);
+		visibilityObserver.observe(root);
+
+		window.addEventListener('pointermove', onPointer, { passive: true });
+		document.addEventListener('visibilitychange', wake);
+	};
+
+	const boot = () => {
+		document.querySelectorAll<HTMLElement>('.hero-waves').forEach(start);
+	};
+
+	boot();
+	document.addEventListener('astro:page-load', boot);
+</script>
+
+<style>
+	.hero-waves {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.hero-waves-canvas {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+</style>
