@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import PageLoader from '../components/PageLoader.astro';
+import ComingSoonDialog from '../components/ComingSoonDialog.astro';
 
 interface Props {
 	title?: string;
@@ -52,6 +53,7 @@ const jsonLd = {
 	<body>
 		<PageLoader />
 		<slot />
+		<ComingSoonDialog />
 
 		<script>
 			import { gsap } from 'gsap';

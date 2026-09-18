@@ -190,7 +190,8 @@ p {
 }
 
 .eyebrow.on-dark {
-	color: #a1a1a6;
+	color: #d0d0d4;
+	text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
 }
 
 @media (prefers-reduced-motion: reduce) {

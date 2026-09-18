@@ -1,0 +1,142 @@
+<dialog class="coming-soon" id="coming-soon" aria-labelledby="coming-soon-title">
+	<p class="coming-soon-kicker">Nidus</p>
+	<h2 id="coming-soon-title">Próximamente</h2>
+	<p class="coming-soon-copy">
+		La app todavía no está en App Store ni Google Play. Dejanos tu correo y te avisamos el día que
+		salga.
+	</p>
+	<div class="coming-soon-actions">
+		<a href="/#lista-espera" class="btn btn-primary" id="coming-soon-waitlist">Avisarme</a>
+		<button type="button" class="btn btn-outline" id="coming-soon-close">Cerrar</button>
+	</div>
+</dialog>
+
+<script>
+	const dialog = document.getElementById('coming-soon') as HTMLDialogElement | null;
+	const closeBtn = document.getElementById('coming-soon-close');
+	const waitlistBtn = document.getElementById('coming-soon-waitlist');
+
+	const isDownloadCta = (link: HTMLAnchorElement) => {
+		if (link.closest('.coming-soon')) return false;
+		if (link.hasAttribute('data-coming-soon')) return true;
+		const label = (link.textContent ?? '').replace(/\s+/g, ' ').trim();
+		if (/descargar/i.test(label)) return true;
+		const href = link.getAttribute('href') ?? '';
+		return /apps\.apple\.com|play\.google\.com/i.test(href);
+	};
+
+	const closeMobileNav = () => {
+		document.getElementById('mobile-dropdown')?.classList.remove('is-open');
+		document.getElementById('mobile-toggle')?.setAttribute('aria-expanded', 'false');
+	};
+
+	const openDialog = () => {
+		if (!dialog || dialog.open) return;
+		closeMobileNav();
+		dialog.showModal();
+	};
+
+	const closeDialog = () => dialog?.close();
+
+	document.addEventListener('click', (event) => {
+		const link = (event.target as HTMLElement | null)?.closest('a');
+		if (!link || !isDownloadCta(link)) return;
+		event.preventDefault();
+		openDialog();
+	});
+
+	closeBtn?.addEventListener('click', closeDialog);
+
+	dialog?.addEventListener('click', (event) => {
+		if (event.target === dialog) closeDialog();
+	});
+
+	waitlistBtn?.addEventListener('click', (event) => {
+		event.preventDefault();
+		closeDialog();
+		const onHome = location.pathname === '/' || location.pathname === '';
+		if (onHome) {
+			document.getElementById('lista-espera')?.scrollIntoView({ behavior: 'smooth' });
+			return;
+		}
+		location.href = '/#lista-espera';
+	});
+</script>
+
+<style>
+	.coming-soon {
+		width: min(420px, calc(100vw - 32px));
+		margin: auto;
+		border: none;
+		border-radius: var(--r-panel);
+		padding: 32px 28px 28px;
+		background: var(--paper);
+		box-shadow: var(--shadow-lifted);
+		text-align: center;
+		color: var(--ink);
+	}
+
+	.coming-soon::backdrop {
+		background: rgba(0, 0, 0, 0.55);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+	}
+
+	.coming-soon[open] {
+		animation: coming-soon-in 280ms var(--ease-out-cubic);
+	}
+
+	.coming-soon-kicker {
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--purple);
+		margin: 0 0 8px;
+	}
+
+	.coming-soon h2 {
+		font-size: 1.85rem;
+		margin: 0 0 10px;
+	}
+
+	.coming-soon-copy {
+		color: var(--muted);
+		font-size: 15px;
+		line-height: 1.5;
+		margin: 0 0 24px;
+	}
+
+	.coming-soon-actions {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.coming-soon-actions .btn {
+		width: 100%;
+	}
+
+	@keyframes coming-soon-in {
+		from {
+			opacity: 0;
+			transform: translateY(12px) scale(0.98);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@media (min-width: 480px) {
+		.coming-soon-actions {
+			flex-direction: row;
+			justify-content: center;
+		}
+
+		.coming-soon-actions .btn {
+			width: auto;
+			min-width: 140px;
+		}
+	}
+</style>

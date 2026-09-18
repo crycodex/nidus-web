@@ -9,9 +9,7 @@ import HeroShapeWaves from '../components/HeroShapeWaves.astro';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
 
-// TODO: reemplazar cuando la app esté publicada; el botón "Descargar" debería
-// abrir ambas tiendas o detectar la plataforma del visitante.
-const APP_STORE_URL = 'https://apps.apple.com/app/nidus';
+const APP_STORE_URL = '/#lista-espera';
 
 const comoFunciona = [
 	{
@@ -143,6 +141,8 @@ const galeriaPases: GalleryPass[] = [
 	},
 ];
 
+const PRICE_COMING_SOON = true;
+
 const planes = [
 	{
 		nombre: 'Mensual',
@@ -178,11 +178,11 @@ const planes = [
 					</p>
 
 					<div class="hero-ctas">
-						<a href={APP_STORE_URL} class="btn btn-primary on-dark">Descargar la app</a>
+						<a href={APP_STORE_URL} class="btn btn-primary on-dark" data-coming-soon>Descargar la app</a>
 						<a href="#como" class="btn btn-outline on-dark">Ver cómo funciona</a>
 					</div>
 
-					<p class="hero-micro">Disponible para iOS y Android. El cliente no instala Nidus.</p>
+					<p class="hero-micro">Próximamente en iOS y Android. El cliente no instala Nidus.</p>
 				</div>
 
 				<div class="hero-visual">
@@ -311,12 +311,21 @@ const planes = [
 							<div class:list={['plan-card', { destacado: plan.destacado }]} data-reveal>
 								{plan.destacado && <span class="plan-badge">Recomendado</span>}
 								<span class="plan-nombre">{plan.nombre}</span>
-								<div class="plan-precio">
-									<span class="plan-monto">{plan.precio}</span>
-									<span class="plan-periodo">{plan.periodo}</span>
+								<div
+									class:list={['plan-precio', { 'is-soon': PRICE_COMING_SOON }]}
+									aria-label={PRICE_COMING_SOON ? 'Precio próximamente' : undefined}
+								>
+									<div class="plan-precio-value" aria-hidden={PRICE_COMING_SOON ? 'true' : undefined}>
+										<span class="plan-monto">{plan.precio}</span>
+										<span class="plan-periodo">{plan.periodo}</span>
+									</div>
 								</div>
 								<p class="plan-nota">{plan.nota}</p>
-								<a href={APP_STORE_URL} class:list={['btn', plan.destacado ? 'btn-primary' : 'btn-outline']}>
+								<a
+									href={APP_STORE_URL}
+									class:list={['btn', plan.destacado ? 'btn-primary' : 'btn-outline']}
+									data-coming-soon
+								>
 									Empezar
 								</a>
 							</div>
@@ -396,7 +405,7 @@ const planes = [
 	<!-- 	<section class="cta-final">
 			<div class="container cta-final-inner" data-reveal>
 				<h2>Pon el nido en el mostrador esta semana.</h2>
-				<a href={APP_STORE_URL} class="btn btn-primary on-dark cta-final-btn">Descargar Nidus</a>
+				<a href={APP_STORE_URL} class="btn btn-primary on-dark cta-final-btn" data-coming-soon>Descargar Nidus</a>
 				<p class="cta-final-note">El cliente sigue sin instalar nada.</p>
 			</div>
 		</section> -->
@@ -506,6 +515,17 @@ const planes = [
 		overflow: hidden;
 	}
 
+	.hero::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+		background:
+			radial-gradient(ellipse 72% 62% at 38% 46%, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.22) 46%, transparent 74%),
+			linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, transparent 22%, transparent 78%, rgba(0, 0, 0, 0.32) 100%);
+	}
+
 	.hero-grid {
 		position: relative;
 		z-index: 1;
@@ -517,10 +537,26 @@ const planes = [
 	}
 
 	.hero-copy {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
+		isolation: isolate;
+	}
+
+	.hero-copy::before {
+		content: '';
+		position: absolute;
+		inset: -14% -10%;
+		z-index: -1;
+		pointer-events: none;
+		background: radial-gradient(
+			ellipse 78% 68% at 50% 42%,
+			rgba(0, 0, 0, 0.72) 0%,
+			rgba(0, 0, 0, 0.38) 48%,
+			transparent 74%
+		);
 	}
 
 	.hero-copy h1 {
@@ -529,19 +565,21 @@ const planes = [
 		max-width: 14ch;
 		margin-inline: auto;
 		letter-spacing: -0.03em;
-		background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+		background: linear-gradient(180deg, #ffffff 0%, #f2f2f4 58%, #dcdce0 100%);
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
+		filter: drop-shadow(0 2px 22px rgba(0, 0, 0, 0.92)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.85));
 	}
 
 	.hero-lead {
 		margin-top: 24px;
 		font-size: 19px;
 		line-height: 1.5;
-		color: rgba(255, 255, 255, 0.78);
+		color: rgba(255, 255, 255, 0.9);
 		max-width: 46ch;
 		margin-inline: auto;
+		text-shadow: 0 1px 18px rgba(0, 0, 0, 0.85);
 	}
 
 	.hero-ctas {
@@ -555,7 +593,8 @@ const planes = [
 	.hero-micro {
 		margin-top: 18px;
 		font-size: 13px;
-		color: rgba(255, 255, 255, 0.5);
+		color: rgba(255, 255, 255, 0.62);
+		text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
 	}
 
 	.hero-visual {
@@ -587,7 +626,8 @@ const planes = [
 		margin: 14px 0 0;
 		text-align: center;
 		font-size: 12.5px;
-		color: rgba(255, 255, 255, 0.45);
+		color: rgba(255, 255, 255, 0.58);
+		text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
 	}
 
 	.section-title {
@@ -896,9 +936,29 @@ const planes = [
 	}
 
 	.plan-precio {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 3.4rem;
+	}
+
+	.plan-precio-value {
 		display: flex;
 		align-items: baseline;
 		gap: 6px;
+	}
+
+	.plan-precio.is-soon {
+		min-height: 4.1rem;
+	}
+
+	.plan-precio.is-soon .plan-precio-value {
+		filter: blur(8px);
+		opacity: 0.78;
+		user-select: none;
+		pointer-events: none;
+		transform: scale(1.06);
 	}
 
 	.plan-monto {
@@ -911,6 +971,26 @@ const planes = [
 	.plan-periodo {
 		color: var(--muted);
 		font-size: 15px;
+	}
+
+	.plan-soon {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		white-space: nowrap;
+		padding: 8px 14px;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7), 0 8px 24px rgba(0, 0, 0, 0.08);
+		font-family: var(--font-ui);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ink);
 	}
 
 	.plan-nota {
@@ -1230,6 +1310,12 @@ const planes = [
 	}
 
 	@media (min-width: 900px) {
+		.hero::after {
+			background:
+				radial-gradient(ellipse 68% 72% at 26% 48%, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.2) 48%, transparent 74%),
+				linear-gradient(180deg, rgba(0, 0, 0, 0.24) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.3) 100%);
+		}
+
 		.hero-grid {
 			grid-template-columns: 1.1fr 0.9fr;
 		}
