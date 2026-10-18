@@ -5,11 +5,11 @@
 	"start_url": "/",
 	"display": "browser",
 	"background_color": "#000000",
-	"theme_color": "#111111",
+	"theme_color": "#000000",
 	"lang": "es",
 	"icons": [
 		{
-			"src": "/brand/nidus_bgremove.png",
+			"src": "/brand/nidus-icon-512.png",
 			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "any"

@@ -1,62 +1,25 @@
 ---
 interface Props {
+	/** 'light' = ink logo for light surfaces, 'dark' = white logo for dark surfaces */
 	variant?: 'dark' | 'light';
+	/** Rendered height in px; width follows the logo's aspect ratio */
 	size?: number;
-	showWordmark?: boolean;
 	class?: string;
 }
 
-const { variant = 'dark', size = 32, showWordmark = true, class: className = '' } = Astro.props;
-const badgeSize = Math.round(size * 1.375);
+// Trimmed from public/brand/nidus.png by the asset export (960×467)
+const RATIO = 960 / 467;
+
+const { variant = 'dark', size = 24, class: className = '' } = Astro.props;
+const width = Math.round(size * RATIO);
+const src = variant === 'dark' ? '/brand/nidus-logo-light.png' : '/brand/nidus-logo.png';
 ---
 
-<span class:list={['nido-mark', className]}>
-	<span class="nido-badge" style={{ width: `${badgeSize}px`, height: `${badgeSize}px` }}>
-		<img
-			src="/brand/nidus_bgremove.png"
-			width={size}
-			height={size}
-			alt=""
-			aria-hidden="true"
-			class="nido-icon"
-		/>
-	</span>
-	{showWordmark && <span class="nido-wordmark" data-variant={variant}>NIDUS</span>}
-</span>
+<img src={src} width={width} height={size} alt="" aria-hidden="true" decoding="async" class:list={['nido-logo', className]} />
 
 <style>
-	.nido-mark {
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-	}
-
-	.nido-badge {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 26%;
-		background: linear-gradient(135deg, #c9b6f2 0%, #b8c8f5 55%, #f6e7a8 100%);
-		flex-shrink: 0;
-	}
-
-	.nido-icon {
+	.nido-logo {
 		display: block;
 		object-fit: contain;
-		width: 68%;
-		height: 68%;
-	}
-
-	.nido-wordmark {
-		font-family: var(--font-ui);
-		font-weight: 900;
-		font-size: 20px;
-		letter-spacing: -0.02em;
-		line-height: 1;
-		color: var(--ink);
-	}
-
-	.nido-wordmark[data-variant='light'] {
-		color: var(--paper);
 	}
 </style>

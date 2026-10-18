@@ -1,15 +1,23 @@
 :root {
 	/* Color */
-	--ink: #1d1d1f;
+	--ink: #1a1a1a;
 	--near-black: #000000;
 	--paper: #ffffff;
 	--canvas: #fbfbfd;
 	--muted: #6e6e73;
 	--faint: #86868b;
-	--purple: #7c3aed;
-	--purple-deep: #4c1d95;
-	--purple-brand: #7c5cbf;
-	--purple-tint: rgba(124, 58, 237, 0.12);
+
+	/* Brand — sampled from the logo bar (public/brand/nidus.png) */
+	--brand-blue: #5270fe;
+	--brand-violet: #a96be2;
+	--brand-pink: #fd66c5;
+	--brand-gradient: linear-gradient(90deg, var(--brand-blue) 0%, var(--brand-violet) 52%, var(--brand-pink) 100%);
+
+	/* Solid accents for text and fills — deepened from the logo hues to hold AA on white */
+	--accent: #5a55e6;
+	--accent-deep: #3a2fa8;
+	--accent-pink: #b8329a;
+	--accent-tint: rgba(90, 85, 230, 0.1);
 	--nav: #000000;
 	--paper-warm: #fffcf7;
 
@@ -119,12 +127,12 @@ p {
 }
 
 ::selection {
-	background: var(--purple);
+	background: var(--accent);
 	color: var(--paper);
 }
 
 :focus-visible {
-	outline: 2px solid var(--purple);
+	outline: 2px solid var(--accent);
 	outline-offset: 3px;
 	border-radius: 4px;
 }
@@ -182,7 +190,7 @@ p {
 }
 
 .btn-primary.on-dark {
-	background: var(--purple);
+	background: var(--accent);
 	color: var(--paper);
 }
 
@@ -241,7 +249,7 @@ p {
 }
 
 .carta-firma-link:hover {
-	color: var(--purple-brand);
+	color: var(--accent);
 }
 
 .carta-firma {

@@ -49,7 +49,7 @@ const jsonLd = {
 		<meta name="description" content={description} />
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 		<meta name="author" content={SITE_NAME} />
-		<meta name="theme-color" content="#111111" />
+		<meta name="theme-color" content="#000000" />
 		<meta name="color-scheme" content="light" />
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="geo.region" content="EC" />
@@ -72,8 +72,9 @@ const jsonLd = {
 		<meta name="twitter:image" content={ogImage} />
 		<meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
 
-		<link rel="icon" type="image/png" href="/brand/nidus_bgremove.png" />
-		<link rel="apple-touch-icon" href="/brand/nidus_bgremove.png" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
 
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
