@@ -5,7 +5,7 @@
 	--paper: #ffffff;
 	--canvas: #fbfbfd;
 	--muted: #6e6e73;
-	--faint: #86868b;
+	--faint: #727277;
 
 	/* Brand — sampled from the logo bar (public/brand/nidus.png) */
 	--brand-blue: #5270fe;
@@ -206,28 +206,20 @@ p {
 	border-color: rgba(255, 255, 255, 0.24);
 }
 
-.eyebrow {
-	font-family: var(--font-ui);
-	font-weight: 600;
-	font-size: 15px;
-	letter-spacing: 0;
-	text-transform: none;
-	color: var(--muted);
-}
-
-.eyebrow.on-dark {
-	color: #d0d0d4;
-	text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
-}
-
+/* Reduced motion: no looping or travelling motion, but colour/opacity state
+   changes keep a short fade so hover, focus and open/close still read. */
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
 	*::after {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
+	}
+
+	.btn:hover,
+	.btn:active {
+		transform: none;
 	}
 }
 

@@ -217,6 +217,7 @@ const links = [
 	}
 
 	.mobile-toggle {
+		position: relative;
 		width: 32px;
 		height: 32px;
 		border-radius: 999px;
@@ -227,6 +228,12 @@ const links = [
 		justify-content: center;
 		cursor: pointer;
 		padding: 0;
+	}
+
+	.mobile-toggle::before {
+		content: '';
+		position: absolute;
+		inset: -7px;
 	}
 
 	.mobile-toggle span {

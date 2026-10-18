@@ -12,10 +12,20 @@ const RATIO = 960 / 467;
 
 const { variant = 'dark', size = 24, class: className = '' } = Astro.props;
 const width = Math.round(size * RATIO);
-const src = variant === 'dark' ? '/brand/nidus-logo-light.png' : '/brand/nidus-logo.png';
+const base = variant === 'dark' ? '/brand/nidus-logo-light' : '/brand/nidus-logo';
 ---
 
-<img src={src} width={width} height={size} alt="" aria-hidden="true" decoding="async" class:list={['nido-logo', className]} />
+<img
+	src={`${base}-240.png`}
+	srcset={`${base}-240.png 240w, ${base}.png 960w`}
+	sizes={`${width}px`}
+	width={width}
+	height={size}
+	alt=""
+	aria-hidden="true"
+	decoding="async"
+	class:list={['nido-logo', className]}
+/>
 
 <style>
 	.nido-logo {

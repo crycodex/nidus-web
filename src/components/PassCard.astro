@@ -350,6 +350,14 @@ const palette = COLORS[color];
 		flex-wrap: wrap;
 	}
 
+	/* Lift the stamps so their enlarged hit areas sit above the reward row. The hero
+	   card is a preserve-3d context, where z-index alone doesn't reorder siblings. */
+	.pass-stamps.clickable {
+		position: relative;
+		z-index: 1;
+		transform: translateZ(1px);
+	}
+
 	.stamp {
 		width: 26px;
 		height: 26px;
@@ -365,8 +373,16 @@ const palette = COLORS[color];
 	}
 
 	.pass-stamps.clickable .stamp {
+		position: relative;
 		cursor: pointer;
 		transition: transform var(--t-fast) var(--ease-out-cubic), background var(--t-fast) var(--ease-out-cubic);
+	}
+
+	/* 44px hit area around the 26px stamp without changing the layout */
+	.pass-stamps.clickable .stamp::before {
+		content: '';
+		position: absolute;
+		inset: -11px;
 	}
 
 	.pass-stamps.clickable .stamp:hover {
