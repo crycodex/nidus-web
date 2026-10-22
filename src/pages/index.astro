@@ -441,7 +441,21 @@ const planes = [
 					avisamos apenas esté lista con tu lugar reservado en la oferta de fundadores.
 				</p>
 
-				<form class="waitlist-form" id="waitlist-form" data-support-email={SUPPORT_EMAIL}>
+				<form
+					class="waitlist-form"
+					id="waitlist-form"
+					action="/api/waitlist"
+					method="post"
+					data-support-email={SUPPORT_EMAIL}
+				>
+					<input
+						type="text"
+						name="company"
+						tabindex="-1"
+						autocomplete="off"
+						aria-hidden="true"
+						class="waitlist-hp"
+					/>
 					<input
 						type="email"
 						name="email"
@@ -454,6 +468,7 @@ const planes = [
 						Avisarme cuando esté lista
 					</button>
 				</form>
+				<p class="waitlist-error" id="waitlist-error" role="alert" hidden></p>
 				<p class="waitlist-success" id="waitlist-success" hidden>
 					Listo. Te avisamos apenas esté lista para descargar.
 				</p>
@@ -515,15 +530,34 @@ const planes = [
 		});
 	}
 
-	// Front-end only: no waitlist backend wired up yet. Swap this for a real
-	// endpoint (serverless function, Formspree, ESP form action, etc.) before launch.
 	const waitlistForm = document.getElementById('waitlist-form') as HTMLFormElement | null;
 	const waitlistSuccess = document.getElementById('waitlist-success');
+	const waitlistError = document.getElementById('waitlist-error');
+	const waitlistSubmit = waitlistForm?.querySelector<HTMLButtonElement>('button[type="submit"]');
 
-	waitlistForm?.addEventListener('submit', (event) => {
+	waitlistForm?.addEventListener('submit', async (event) => {
 		event.preventDefault();
-		waitlistForm.hidden = true;
-		if (waitlistSuccess) waitlistSuccess.hidden = false;
+		if (waitlistError) waitlistError.hidden = true;
+		if (waitlistSubmit) waitlistSubmit.disabled = true;
+
+		try {
+			const res = await fetch(waitlistForm.action, { method: 'POST', body: new FormData(waitlistForm) });
+			const data = await res.json().catch(() => ({}));
+			if (!res.ok || !data.ok) {
+				throw new Error(data.error === 'invalid_email' ? 'Revisá el correo, parece incompleto.' : '');
+			}
+			waitlistForm.hidden = true;
+			if (waitlistSuccess) waitlistSuccess.hidden = false;
+		} catch (err) {
+			if (waitlistError) {
+				const support = waitlistForm.dataset.supportEmail;
+				waitlistError.textContent =
+					(err as Error).message || `No pudimos guardar tu correo. Probá de nuevo o escribinos a ${support}.`;
+				waitlistError.hidden = false;
+			}
+		} finally {
+			if (waitlistSubmit) waitlistSubmit.disabled = false;
+		}
 	});
 </script>
 
@@ -1350,6 +1384,25 @@ const planes = [
 		color: var(--paper);
 		font-size: 15px;
 		font-weight: 600;
+	}
+
+	.waitlist-hp {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		opacity: 0;
+	}
+
+	.waitlist-submit:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+
+	.waitlist-error {
+		margin: 0;
+		color: #ff8a80;
+		font-size: 14px;
 	}
 
 	.waitlist-note {
