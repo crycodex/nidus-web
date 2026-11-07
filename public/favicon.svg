@@ -1,17 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
-	<defs>
-		<linearGradient id="bar" x1="9" y1="0" x2="55" y2="0" gradientUnits="userSpaceOnUse">
-			<stop offset="0" stop-color="#5270FE" />
-			<stop offset="0.52" stop-color="#A96BE2" />
-			<stop offset="1" stop-color="#FD66C5" />
-		</linearGradient>
-	</defs>
-	<rect class="shell" x="3" y="18" width="58" height="28" rx="14" stroke-width="4" />
-	<rect x="10" y="25" width="44" height="14" rx="7" fill="url(#bar)" />
-	<style>
-		.shell { stroke: #1A1A1A; fill: #FFFFFF; }
-		@media (prefers-color-scheme: dark) {
-			.shell { stroke: #FFFFFF; fill: #000000; }
-		}
-	</style>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1024 1024">
+	<rect width="1024" height="1024" rx="224" fill="#7C5CBF" />
+	<circle cx="512" cy="385.5" r="54.5" fill="#F5D76E" />
+	<path
+		d="M 420.75 464 A 91.25 91.25 0 0 0 603.25 464"
+		stroke="#FFFFFF"
+		stroke-width="50.5"
+		stroke-linecap="butt"
+	/>
+	<path
+		d="M 333.25 464 A 178.75 178.75 0 0 0 690.75 464"
+		stroke="#FFFFFF"
+		stroke-width="50.5"
+		stroke-linecap="butt"
+	/>
 </svg>

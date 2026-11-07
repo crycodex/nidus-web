@@ -1,23 +1,23 @@
 :root {
 	/* Color */
-	--ink: #1a1a1a;
+	--ink: #1a1528;
 	--near-black: #000000;
 	--paper: #ffffff;
 	--canvas: #fbfbfd;
 	--muted: #6e6e73;
 	--faint: #727277;
 
-	/* Brand — sampled from the logo bar (public/brand/nidus.png) */
-	--brand-blue: #5270fe;
-	--brand-violet: #a96be2;
-	--brand-pink: #fd66c5;
+	/* Brand — sampled from public/icon/nidus_app_icon.png */
+	--brand-blue: #7c5cbf;
+	--brand-violet: #9b7ede;
+	--brand-pink: #f5d76e;
 	--brand-gradient: linear-gradient(90deg, var(--brand-blue) 0%, var(--brand-violet) 52%, var(--brand-pink) 100%);
 
-	/* Solid accents for text and fills — deepened from the logo hues to hold AA on white */
-	--accent: #5a55e6;
-	--accent-deep: #3a2fa8;
-	--accent-pink: #b8329a;
-	--accent-tint: rgba(90, 85, 230, 0.1);
+	/* Solid accents for text and fills — deepened from the app icon purple (#7c5cbf) to hold AA on white */
+	--accent: #6c4cb3;
+	--accent-deep: #4c1d95;
+	--accent-pink: #7c5cbf;
+	--accent-tint: rgba(124, 92, 191, 0.12);
 	--nav: #000000;
 	--paper-warm: #fffcf7;
 

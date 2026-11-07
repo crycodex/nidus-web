@@ -32,7 +32,7 @@ const legal = [
 <footer class="site-footer">
 	<div class="container footer-top">
 		<div class="footer-brand">
-			<NidoMark variant="light" size={44} />
+			<NidoMark variant="light" size={28} />
 			<p class="footer-tagline">El nido que hace que tus clientes vuelvan.</p>
 			<a href="/#lista-espera" class="btn btn-primary footer-cta" data-coming-soon>Descargar Nidus</a>
 		</div>
@@ -68,7 +68,7 @@ const legal = [
 		</div>
 	</div>
 
-	<div class="container footer-bar" aria-hidden="true"><span></span></div>
+	<div class="footer-wordmark" aria-hidden="true">nidus</div>
 
 	<div class="container footer-bottom">
 		<p class="footer-copy">© 2026 Nidu</p>
@@ -150,19 +150,16 @@ const legal = [
 		color: var(--ink);
 	}
 
-	/* The logo's bar, full width: the nest filled end to end */
-	.footer-bar {
+	.footer-wordmark {
 		margin-top: 64px;
-		margin-bottom: 40px;
-	}
-
-	.footer-bar span {
-		display: block;
-		height: clamp(28px, 4.5vw, 52px);
-		border-radius: 999px;
-		background: var(--brand-gradient) content-box;
-		border: 2px solid var(--ink);
-		padding: clamp(4px, 0.7vw, 8px);
+		text-align: center;
+		font-family: var(--font-ui);
+		font-weight: 800;
+		letter-spacing: -0.04em;
+		font-size: clamp(4rem, 18vw, 11rem);
+		line-height: 1;
+		color: var(--canvas);
+		user-select: none;
 	}
 
 	.footer-bottom {

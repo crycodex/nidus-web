@@ -2,34 +2,56 @@
 interface Props {
 	/** 'light' = ink logo for light surfaces, 'dark' = white logo for dark surfaces */
 	variant?: 'dark' | 'light';
-	/** Rendered height in px; width follows the logo's aspect ratio */
+	/** 'lockup' = horizontal symbol + wordmark, 'splash' = stacked symbol + wordmark, 'icon' = app icon, 'symbol' = symbol only */
+	layout?: 'lockup' | 'splash' | 'icon' | 'symbol';
+	/** Rendered height in px; width follows the asset's aspect ratio */
 	size?: number;
 	class?: string;
 }
 
-// Trimmed from public/brand/nidus.png by the asset export (960×467)
-const RATIO = 960 / 467;
+const RATIOS = {
+	lockup: 1200 / 266,
+	splash: 480 / 508,
+	icon: 1,
+	symbol: 1,
+} as const;
 
-const { variant = 'dark', size = 24, class: className = '' } = Astro.props;
-const width = Math.round(size * RATIO);
-const base = variant === 'dark' ? '/brand/nidus-logo-light' : '/brand/nidus-logo';
+const { variant = 'dark', layout = 'lockup', size = 24, class: className = '' } = Astro.props;
+const width = Math.round(size * RATIOS[layout]);
+
+const src =
+	layout === 'icon'
+		? '/icon/nidus_app_icon.png'
+		: layout === 'splash'
+			? variant === 'dark'
+				? '/icon/nidus_splash_white.png'
+				: '/icon/nidus_splash.png'
+			: layout === 'symbol'
+				? variant === 'dark'
+					? '/icon/nidus_adaptive_foreground.png'
+					: '/icon/nidus_symbol.png'
+				: variant === 'dark'
+					? '/icon/nidus_lockup_white.png'
+					: '/icon/nidus_lockup.png';
 ---
 
 <img
-	src={`${base}-240.png`}
-	srcset={`${base}-240.png 240w, ${base}.png 960w`}
-	sizes={`${width}px`}
+	src={src}
 	width={width}
 	height={size}
 	alt=""
 	aria-hidden="true"
 	decoding="async"
-	class:list={['nido-logo', className]}
+	class:list={['nido-logo', { 'nido-logo--icon': layout === 'icon' }, className]}
 />
 
 <style>
 	.nido-logo {
 		display: block;
 		object-fit: contain;
+	}
+
+	.nido-logo--icon {
+		border-radius: 22%;
 	}
 </style>

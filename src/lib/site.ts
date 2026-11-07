@@ -49,7 +49,7 @@ const organization = {
 	email: SUPPORT_EMAIL,
 	logo: {
 		'@type': 'ImageObject',
-		url: `${SITE_URL}/brand/nidus.png`,
+		url: `${SITE_URL}/icon/nidus_app_icon.png`,
 	},
 	founder: {
 		'@type': 'Person',

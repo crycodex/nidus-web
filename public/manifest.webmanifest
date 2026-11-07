@@ -5,11 +5,17 @@
 	"start_url": "/",
 	"display": "browser",
 	"background_color": "#000000",
-	"theme_color": "#000000",
+	"theme_color": "#7C5CBF",
 	"lang": "es",
 	"icons": [
 		{
-			"src": "/brand/nidus-icon-512.png",
+			"src": "/icon/nidus_app_icon.png",
+			"sizes": "1024x1024",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/icon/nidus_symbol.png",
 			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "any"

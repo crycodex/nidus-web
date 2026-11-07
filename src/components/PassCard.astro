@@ -46,7 +46,7 @@ const DEFAULT_HIGHLIGHT: Partial<Record<PassKind, { value: string; label: string
 };
 
 const COLORS: Record<PassColor, { from: string; to: string; check: string; shadow: string }> = {
-	nidus: { from: '#4F5BEF', to: '#B8329A', check: '#5A55E6', shadow: 'rgba(120, 60, 200, 0.45)' },
+	nidus: { from: '#7C5CBF', to: '#4C1D95', check: '#7C5CBF', shadow: 'rgba(124, 92, 191, 0.45)' },
 	purple: { from: '#7C3AED', to: '#4C1D95', check: '#7C3AED', shadow: 'rgba(76, 29, 149, 0.45)' },
 	tomate: { from: '#FF6B4A', to: '#B93E1F', check: '#FF6B4A', shadow: 'rgba(185, 62, 31, 0.42)' },
 	grafito: { from: '#4B5563', to: '#1F2937', check: '#4B5563', shadow: 'rgba(31, 41, 55, 0.5)' },
@@ -202,9 +202,10 @@ const palette = COLORS[color];
 
 	<div class="pass-footer">
 		<span class="nest-glyph" aria-hidden="true">
-			<svg viewBox="0 0 44 16" width="22" height="8" fill="none">
-				<rect x="0.75" y="0.75" width="42.5" height="14.5" rx="7.25" stroke="white" stroke-width="1.5" opacity="0.9" />
-				<rect x="4" y="4" width="36" height="8" rx="4" fill="white" opacity="0.75" />
+			<svg viewBox="0 0 24 22" width="16" height="15" fill="none">
+				<circle cx="12" cy="4.5" r="3" fill="#F5D76E" />
+				<path d="M6.5 9.5A5.5 5.5 0 0 0 17.5 9.5" stroke="white" stroke-width="2.6" stroke-linecap="butt" opacity="0.95" />
+				<path d="M2 9.5A10 10 0 0 0 22 9.5" stroke="white" stroke-width="2.6" stroke-linecap="butt" opacity="0.85" />
 			</svg>
 		</span>
 		<span>Hecho con Nidus</span>
