@@ -142,6 +142,8 @@ const galeriaPases: GalleryPass[] = [
 	},
 ];
 
+// Sección de precios desactivada (App Store Guideline 3.1.1). Cambiar a true para volver a mostrarla.
+const SHOW_PRICING = false;
 const PRICE_COMING_SOON = true;
 
 const planes = [
@@ -302,6 +304,7 @@ const planes = [
 		</section>
 
 		<!-- Precios -->
+		{SHOW_PRICING && (
 		<section class="precios" id="precios">
 			<div class="container">
 				<h2 class="section-title">Un precio, sin letra chica.</h2>
@@ -348,6 +351,7 @@ const planes = [
 				</div>
 			</div>
 		</section>
+		)}
 
 		<!-- G: IA -->
 		<section class="ia" id="ia">
@@ -438,7 +442,7 @@ const planes = [
 				<h2>Sé de los primeros en usar Nidus.</h2>
 				<p class="waitlist-lead">
 					Estamos afinando el lanzamiento en Apple Wallet y Google Wallet. Dejanos tu correo y te
-					avisamos apenas esté lista con tu lugar reservado en la oferta de fundadores.
+					avisamos apenas esté lista.
 				</p>
 
 				<form

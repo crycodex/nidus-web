@@ -34,10 +34,6 @@ export const faqs = [
 		q: '¿Qué tipos de pase puedo crear?',
 		a: 'Fidelización, cupón, entrada, membresía, tarjeta de regalo o un pase. También niveles Bronce, Plata y Oro.',
 	},
-	{
-		q: '¿Cuánto cuesta Nidus?',
-		a: 'Un precio, sin letra chica. El detalle se anuncia al lanzamiento. Los primeros negocios entran a la oferta de fundadores.',
-	},
 ];
 
 const organization = {
