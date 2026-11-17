@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import PageLoader from '../components/PageLoader.astro';
-import ComingSoonDialog from '../components/ComingSoonDialog.astro';
 import {
 	SITE_URL,
 	SITE_NAME,
@@ -84,7 +83,6 @@ const jsonLd = {
 		<a class="skip-link" href="#top">Saltar al contenido</a>
 		<PageLoader />
 		<slot />
-		<ComingSoonDialog />
 
 		<script>
 			import { gsap } from 'gsap';

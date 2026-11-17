@@ -5,6 +5,8 @@ export const SITE_TITLE = 'Nidus — Fideliza a tus clientes sin fricción';
 export const SITE_DESCRIPTION =
 	'Tarjetas de fidelización digitales en Apple Wallet y Google Wallet para negocios locales. El cliente no descarga nada. Tú sellas en el mostrador.';
 export const SUPPORT_EMAIL = 'soporte@nidu.app';
+// Enlace único de descarga: redirige a App Store o Google Play según el dispositivo.
+export const APP_DOWNLOAD_URL = 'https://onelink.to/epptwp';
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 export const OG_IMAGE_ALT = 'Nidus: fideliza a tus clientes sin fricción';
 export const LOCALE = 'es_EC';
@@ -70,11 +72,13 @@ const software = {
 	inLanguage: 'es',
 	description: SITE_DESCRIPTION,
 	image: OG_IMAGE,
+	downloadUrl: APP_DOWNLOAD_URL,
+	installUrl: APP_DOWNLOAD_URL,
 	author: { '@id': `${SITE_URL}/#organization` },
 	offers: {
 		'@type': 'Offer',
-		url: `${SITE_URL}/#lista-espera`,
-		availability: 'https://schema.org/PreOrder',
+		url: APP_DOWNLOAD_URL,
+		availability: 'https://schema.org/InStock',
 		priceCurrency: 'USD',
 	},
 };

@@ -6,11 +6,12 @@ import PassCard from '../components/PassCard.astro';
 import type { PassColor, PassKind } from '../components/PassCard.astro';
 import BackgroundBeams from '../components/BackgroundBeams.astro';
 import HeroShapeWaves from '../components/HeroShapeWaves.astro';
-import { faqs, homeJsonLd } from '../lib/site';
+import { APP_DOWNLOAD_URL, faqs, homeJsonLd } from '../lib/site';
 
 const SUPPORT_EMAIL = 'soporte@nidu.app';
 
-const APP_STORE_URL = '/#lista-espera';
+// La app ya está publicada: la lista de espera queda oculta. Cambiar a true para volver a mostrarla.
+const SHOW_WAITLIST = false;
 
 const comoFunciona = [
 	{
@@ -180,11 +181,11 @@ const planes = [
 					</p>
 
 					<div class="hero-ctas">
-						<a href={APP_STORE_URL} class="btn btn-primary on-dark" data-coming-soon>Descargar la app</a>
+						<a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener" class="btn btn-primary on-dark">Descargar la app</a>
 						<a href="#como" class="btn btn-outline on-dark">Ver cómo funciona</a>
 					</div>
 
-					<p class="hero-micro">Próximamente en iOS y Android. El cliente no instala Nidus.</p>
+					<p class="hero-micro">Disponible en iOS y Android. El cliente no instala Nidus.</p>
 				</div>
 
 				<div class="hero-visual">
@@ -325,9 +326,10 @@ const planes = [
 								</div>
 								<p class="plan-nota">{plan.nota}</p>
 								<a
-									href={APP_STORE_URL}
+									href={APP_DOWNLOAD_URL}
+									target="_blank"
+									rel="noopener"
 									class:list={['btn', plan.destacado ? 'btn-primary' : 'btn-outline']}
-									data-coming-soon
 								>
 									Empezar
 								</a>
@@ -411,13 +413,13 @@ const planes = [
 		</section>
 
 		<!-- I: CTA final -->
-	<!-- 	<section class="cta-final">
+		<section class="cta-final">
 			<div class="container cta-final-inner" data-reveal>
 				<h2>Pon el nido en el mostrador esta semana.</h2>
-				<a href={APP_STORE_URL} class="btn btn-primary on-dark cta-final-btn" data-coming-soon>Descargar Nidus</a>
+				<a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener" class="btn btn-primary on-dark cta-final-btn">Descargar Nidus</a>
 				<p class="cta-final-note">El cliente sigue sin instalar nada.</p>
 			</div>
-		</section> -->
+		</section>
 
 		<section class="faq" id="faq">
 			<div class="container">
@@ -436,50 +438,54 @@ const planes = [
 		</section>
 
 		<!-- Lista de espera -->
-		<section class="waitlist" id="lista-espera">
-			<BackgroundBeams />
-			<div class="container waitlist-inner" data-reveal>
-				<h2>Sé de los primeros en usar Nidus.</h2>
-				<p class="waitlist-lead">
-					Estamos afinando el lanzamiento en Apple Wallet y Google Wallet. Dejanos tu correo y te
-					avisamos apenas esté lista.
-				</p>
+		{
+			SHOW_WAITLIST && (
+			<section class="waitlist" id="lista-espera">
+				<BackgroundBeams />
+				<div class="container waitlist-inner" data-reveal>
+					<h2>Sé de los primeros en usar Nidus.</h2>
+					<p class="waitlist-lead">
+						Estamos afinando el lanzamiento en Apple Wallet y Google Wallet. Dejanos tu correo y te
+						avisamos apenas esté lista.
+					</p>
 
-				<form
-					class="waitlist-form"
-					id="waitlist-form"
-					action="/api/waitlist"
-					method="post"
-					data-support-email={SUPPORT_EMAIL}
-				>
-					<input
-						type="text"
-						name="company"
-						tabindex="-1"
-						autocomplete="off"
-						aria-hidden="true"
-						class="waitlist-hp"
-					/>
-					<input
-						type="email"
-						name="email"
-						required
-						placeholder="tu@negocio.com"
-						aria-label="Tu correo"
-						class="waitlist-input"
-					/>
-					<button type="submit" class="btn btn-primary on-dark waitlist-submit">
-						Avisarme cuando esté lista
-					</button>
-				</form>
-				<p class="waitlist-error" id="waitlist-error" role="alert" hidden></p>
-				<p class="waitlist-success" id="waitlist-success" hidden>
-					Listo. Te avisamos apenas esté lista para descargar.
-				</p>
+					<form
+						class="waitlist-form"
+						id="waitlist-form"
+						action="/api/waitlist"
+						method="post"
+						data-support-email={SUPPORT_EMAIL}
+					>
+						<input
+							type="text"
+							name="company"
+							tabindex="-1"
+							autocomplete="off"
+							aria-hidden="true"
+							class="waitlist-hp"
+						/>
+						<input
+							type="email"
+							name="email"
+							required
+							placeholder="tu@negocio.com"
+							aria-label="Tu correo"
+							class="waitlist-input"
+						/>
+						<button type="submit" class="btn btn-primary on-dark waitlist-submit">
+							Avisarme cuando esté lista
+						</button>
+					</form>
+					<p class="waitlist-error" id="waitlist-error" role="alert" hidden></p>
+					<p class="waitlist-success" id="waitlist-success" hidden>
+						Listo. Te avisamos apenas esté lista para descargar.
+					</p>
 
-				<p class="waitlist-note">Sin spam. Un solo correo, cuando lancemos.</p>
-			</div>
-		</section>
+					<p class="waitlist-note">Sin spam. Un solo correo, cuando lancemos.</p>
+				</div>
+			</section>
+			)
+		}
 	</main>
 
 	<Footer />
